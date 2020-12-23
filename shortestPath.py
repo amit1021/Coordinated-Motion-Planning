@@ -26,7 +26,7 @@ def BFS(mat, src: Point, dest: Point):
 
     # check source and destination cell
     # of the matrix have value 1
-    if mat[src.x][src.y] == 13 or mat[dest.x][dest.y] == 13:
+    if mat[src.x][src.y] == 13 or mat[dest.x][dest.y] == -1:
         return -1
 
     visited = [[False for i in range(COL)]
@@ -67,7 +67,9 @@ def BFS(mat, src: Point, dest: Point):
                 visited[row][col] = True
                 p = []
                 for point in curr.path:
-                    p.append(point)
+                    # if it's not the start place
+                    if point != src:
+                        p.append(point)
                 p.append(curr.pt)
                 Adjcell = queueNode(Point(row, col), curr.dist + 1, p)
                 q.append(Adjcell)

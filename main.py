@@ -20,7 +20,7 @@ RobotList2 = []
 
 def init_game():
     x=0
-    idb = InstanceDatabase("C:/Users/amite/Desktop/שנה ג/פרויקט/cgshop_2021_instances_01.zip")
+    idb = InstanceDatabase("/home/ohad/Downloads/cgshop_2021_instances_01.zip")
     for i in idb:
         print("Instance:", i)
         x = x + 1
@@ -56,25 +56,18 @@ def init_game():
 
 
 
-# def start_game(board):
-#
-#     for i in robot_list:
-#         a = BFS(board, i.current_place, i.end_place)
-#
-#         ==========
-#         moveRobot()
-#
-#         if(r.currPlace == endPalce)
-#
-#         print(a)
-#         # for p in a.path:
-#         #     print("X=  " + p[0] + "  Y = " + p[1])
+def start_game(board):
+    move_robot_list = []
+    for r in robot_list:
+        move_robot_list.append(r)
+    while len(move_robot_list) != 0:
+        for robot_i in move_robot_list:
+            v = BFS(board, robot_i.current_place, robot_i.end_place)
+            next_step = v.path[0]
+            move_robot(next_step, robot_i, board, move_robot_list)
 
 
 
-
-
-# ---------------------- Example ---------------------------
 
 def move_robot(next_step, robot, board, move_robot_list):
     # take the current place of the robot
@@ -83,20 +76,18 @@ def move_robot(next_step, robot, board, move_robot_list):
     # delete th robot from the board
     board[prev_x][prev_y] = 0
     #remove from the lists
-    move_robot_list.remove(robot)
-    RobotList2.remove(robot)
+    # move_robot_list.remove(robot)
+    # RobotList2.remove(robot)
+
+
     # update robot to the next step
     robot.current_place = next_step
     # update the robot on the board
     board[next_step.x][next_step.y] = robot
-    if (robot.current_place.x == robot.end_place.x
-            and robot.current_place.y == robot.end_place.y):
-        robot_list.append(robot)
-        return
-    else:
-        #add to the lists
-        move_robot_list.append(robot)
-        robot_list.append(robot)
+    if Point.equal(robot.current_place, robot.end_place):
+        move_robot_list.remove(robot)
+
+# ---------------------- Example ---------------------------
 
 def example():
     r1 = Robot(Point(0,0), Point(0,3))
@@ -104,38 +95,23 @@ def example():
     r3 = Robot(Point(1,1), Point(3,0))
 
 
-    RobotList2.append(r1)
-    RobotList2.append(r2)
-    RobotList2.append(r3)
+    robot_list.append(r1)
+    robot_list.append(r2)
+    robot_list.append(r3)
     robotMatrix2 = [[0 for i in range(4)] for j in range(4)]
     robotMatrix2[0][0] = r1
     robotMatrix2[2][2] = r2
     robotMatrix2[1][1] = r3
-    move_robot_list = []
-
-    for r in RobotList2:
-        move_robot_list.append(r)
-
-    while len(move_robot_list) != 0:
-        for robot_i in RobotList2:
-            # if (robot_i.current_place.x == robot_i.end_place.x
-            #         and robot_i.current_place.y == robot_i.end_place.y):
-            #     print("in the if")
-                # move_robot_list.remove(robot_i)
-            v = BFS(robotMatrix2, robot_i.current_place, robot_i.end_place)
-            next_step = v.path[0]
-            move_robot(next_step, robot_i, robotMatrix2, move_robot_list)
-
-    print(robotMatrix2)
-
+    return robotMatrix2
 
 # ---------------------------------------------------------
 
 
 def main():
-    example()
-    # board = init()
-
+    board = example()
+    # board = init_game()
+    start_game(board)
+    print(board)
 
 if __name__ == '__main__':
     main()

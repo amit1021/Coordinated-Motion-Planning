@@ -14,9 +14,9 @@ def isValid(row: int, col: int ,ROW: int, COL: int):
 
 # Function to find the shortest path between
 # a given source cell to a destination cell.
-def BFS(mat, src: Point, dest: Point):
+def BFS(board, src: Point, dest: Point):
 
-    ROW = COL = len(mat)
+    ROW = COL = len(board)
 
     # These arrays are used to get row and column
     # numbers of 4 neighbours of a given cell
@@ -26,7 +26,7 @@ def BFS(mat, src: Point, dest: Point):
 
     # check source and destination cell
     # of the matrix have value 1
-    if mat[src.x][src.y] == 13 or mat[dest.x][dest.y] == -1:
+    if board[src.x][src.y] == -1 or board[dest.x][dest.y] == -1:
         return -1
 
     visited = [[False for i in range(COL)]
@@ -62,7 +62,7 @@ def BFS(mat, src: Point, dest: Point):
             # if adjacent cell is valid, has path
             # and not visited yet, enqueue it.
             if (isValid(row, col,ROW , COL) and
-                    mat[row][col] == 0 and
+                    board[row][col] == 0 and
                     not visited[row][col]):
                 visited[row][col] = True
                 p = []
@@ -70,7 +70,8 @@ def BFS(mat, src: Point, dest: Point):
                     # if it's not the start place
                     if point != src:
                         p.append(point)
-                p.append(curr.pt)
+                if curr.pt != src:
+                    p.append(curr.pt)
                 Adjcell = queueNode(Point(row, col), curr.dist + 1, p)
                 q.append(Adjcell)
 

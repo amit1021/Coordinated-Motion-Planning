@@ -4,9 +4,9 @@ import Point
 
 
 class queueNode:
-    def __init__(self, pt: Point, dist: int, path: []):
-        self.pt = pt  # The cordinates of the cell
-        self.dist = dist  # Cell's distance from the source
+    def __init__(self, current_point: Point, dist: int, path: []):
+        self.pt = current_point  # The cordinates of the cell
+        self.dist = dist  # Cell's distance from the source to the dest
         self.path = path
 
     def __repr__(self):

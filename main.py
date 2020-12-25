@@ -16,10 +16,9 @@ from shortestPath import BFS
 
 # list of all the robots
 robot_list = []
+RobotList2 = []
 
-
-
-def init():
+def init_game():
     x=0
     idb = InstanceDatabase("C:/Users/amite/Desktop/שנה ג/פרויקט/cgshop_2021_instances_01.zip")
     for i in idb:
@@ -74,13 +73,37 @@ def init():
 
 
 
+
 # ---------------------- Example ---------------------------
+
+def move_robot(next_step, robot, board, move_robot_list):
+    # take the current place of the robot
+    prev_x = robot.current_place.x
+    prev_y = robot.current_place.y
+    # delete th robot from the board
+    board[prev_x][prev_y] = 0
+    #remove from the lists
+    move_robot_list.remove(robot)
+    RobotList2.remove(robot)
+    # update robot to the next step
+    robot.current_place = next_step
+    # update the robot on the board
+    board[next_step.x][next_step.y] = robot
+    if (robot.current_place.x == robot.end_place.x
+            and robot.current_place.y == robot.end_place.y):
+        robot_list.append(robot)
+        return
+    else:
+        #add to the lists
+        move_robot_list.append(robot)
+        robot_list.append(robot)
+
 def example():
     r1 = Robot(Point(0,0), Point(0,3))
     r2 = Robot (Point(2,2), Point(3,3))
     r3 = Robot(Point(1,1), Point(3,0))
 
-    RobotList2 = []
+
     RobotList2.append(r1)
     RobotList2.append(r2)
     RobotList2.append(r3)
@@ -88,17 +111,24 @@ def example():
     robotMatrix2[0][0] = r1
     robotMatrix2[2][2] = r2
     robotMatrix2[1][1] = r3
+    move_robot_list = []
+
+    for r in RobotList2:
+        move_robot_list.append(r)
+
+    while len(move_robot_list) != 0:
+        for robot_i in RobotList2:
+            # if (robot_i.current_place.x == robot_i.end_place.x
+            #         and robot_i.current_place.y == robot_i.end_place.y):
+            #     print("in the if")
+                # move_robot_list.remove(robot_i)
+            v = BFS(robotMatrix2, robot_i.current_place, robot_i.end_place)
+            next_step = v.path[0]
+            move_robot(next_step, robot_i, robotMatrix2, move_robot_list)
 
     print(robotMatrix2)
 
-    #
-    # for i in RobotList2:
-    #     v = BFS(robotMatrix2, i.current_place, i.end_place)
-    #     next_step = v.path[0]
-    #     move_robot()
-    #     if r.current_place == r.end_place:
-    #         remove()
-    #     print(v)
+
 # ---------------------------------------------------------
 
 

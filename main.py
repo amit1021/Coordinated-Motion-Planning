@@ -18,9 +18,10 @@ from shortestPath import BFS
 robot_list = []
 RobotList2 = []
 
+
 def init_game():
     x=0
-    idb = InstanceDatabase("/home/ohad/Downloads/cgshop_2021_instances_01.zip")
+    idb = InstanceDatabase("C:/Users/amite/Desktop/שנה ג/פרויקט/cgshop_2021_instances_01.zip")
     for i in idb:
         print("Instance:", i)
         x = x + 1
@@ -58,14 +59,30 @@ def init_game():
 
 def start_game(board):
     move_robot_list = []
+    count_steps = 0
+
     for r in robot_list:
         move_robot_list.append(r)
+
     while len(move_robot_list) != 0:
+        print("number of robot that left: ", len(move_robot_list))
         for robot_i in move_robot_list:
             v = BFS(board, robot_i.current_place, robot_i.end_place)
-            next_step = v.path[0]
+            if v == -1:
+                next_step = robot_i.current_place
+            else:
+                next_step = v.path[0]
+                count_steps = count_steps + 1
             move_robot(next_step, robot_i, board, move_robot_list)
 
+
+    print("steps--------------->" ,count_steps)
+    print(board)
+
+    for i_r in robot_list:
+        print(i_r)
+
+    print(count_steps)
 
 
 
@@ -108,8 +125,8 @@ def example():
 
 
 def main():
-    board = example()
-    # board = init_game()
+    # board = example()
+    board = init_game()
     start_game(board)
     print(board)
 

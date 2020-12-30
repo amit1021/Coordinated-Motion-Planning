@@ -1,23 +1,18 @@
 # This is a sample Python script.
 
 import json
-from cgshop2021_pyutils import Solution, SolutionStep, SolutionZipWriter, Direction
-from cgshop2021_pyutils import Instance
-from cgshop2021_pyutils import InstanceDatabase
-import numpy as np
 
 from Point import Point
 from Robot import Robot
 from cgshop2021_pyutils import Instance
 from cgshop2021_pyutils import InstanceDatabase
 
-from queueNode import queueNode
 from shortestPath import BFS
 
 # list of all the robots
 robot_list = []
-RobotList2 = []
-
+# List of robots that have reached their destination
+robot_in_dest = []
 
 def init_game():
     x=0
@@ -25,7 +20,7 @@ def init_game():
     for i in idb:
         print("Instance:", i)
         x = x + 1
-        if x == 2:
+        if x == 1:
             break
 
     # get the board dimensions
@@ -56,6 +51,27 @@ def init_game():
     return board
 
 
+def isValid(row: int, col: int ,ROW: int, COL: int, board):
+    return (row >= 0) and (row < ROW) and (col >= 0) and (col < COL) and board[row][col] == 0
+
+def move_robot_in_destination(robot, board, move_robot_list, robot_destination):
+    # These arrays are used to get row and column
+    # numbers of 4 neighbours of a given cell
+    rowNum = [-1, 0, 0, 1]
+    colNum = [0, -1, 1, 0]
+    for i in range(4):
+        row = robot.current_place.x + rowNum[i]
+        col = robot.current_place.y + colNum[i]
+        if isValid(row, col, len(board), len(board), board):
+            board[robot.current_place.x][robot.current_place.y] = 0
+            robot.current_place = Point(row,col)
+            board[row][col] = robot
+            if robot_destination == True:
+                robot_in_dest.remove(robot)
+                move_robot_list.append(robot)
+        return
+
+
 
 def start_game(board):
     move_robot_list = []
@@ -68,21 +84,30 @@ def start_game(board):
         print("number of robot that left: ", len(move_robot_list))
         for robot_i in move_robot_list:
             v = BFS(board, robot_i.current_place, robot_i.end_place)
-            if v == -1:
-                next_step = robot_i.current_place
-            else:
-                next_step = v.path[0]
-                count_steps = count_steps + 1
-            move_robot(next_step, robot_i, board, move_robot_list)
+            next_step = v.path[0]
+            flag = False
+            if board[next_step.x][next_step.y] != 0:
+                for r_dest in robot_in_dest:
+                    if next_step == r_dest.end_place:
+                        print("In the if of board[next_step.x][next_step.y] != 0")
+                        count_steps = count_steps + 1
+                        move_robot_in_destination(r_dest, board, move_robot_list, True)
+                        robot_i.stuck = 0
+                        flag = True
 
+                if flag == False and robot_i.stuck == 7:
+                    r_dest = board[next_step.x][next_step.y]
+                    count_steps = count_steps + 1
+                    move_robot_in_destination(r_dest, board, move_robot_list, False)
+                    robot_i.stuck = 0
+
+                elif flag == False and robot_i.stuck < 7:
+                    robot_i.stuck = robot_i.stuck + 1
+            move_robot(next_step, robot_i, board, move_robot_list)
+            count_steps = count_steps + 1
 
     print("steps--------------->" ,count_steps)
     print(board)
-
-    for i_r in robot_list:
-        print(i_r)
-
-    print(count_steps)
 
 
 
@@ -103,6 +128,7 @@ def move_robot(next_step, robot, board, move_robot_list):
     board[next_step.x][next_step.y] = robot
     if Point.equal(robot.current_place, robot.end_place):
         move_robot_list.remove(robot)
+        robot_in_dest.append(robot)
 
 # ---------------------- Example ---------------------------
 

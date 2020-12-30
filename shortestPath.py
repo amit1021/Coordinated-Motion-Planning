@@ -62,7 +62,7 @@ def BFS(board, src: Point, dest: Point):
             # if adjacent cell is valid, has path
             # and not visited yet, enqueue it.
             if (isValid(row, col,ROW , COL) and
-                    board[row][col] !=-1 and
+                    board[row][col] != -1 and
                     not visited[row][col]):
                 visited[row][col] = True
                 p = []

@@ -7,6 +7,7 @@ from Robot import Robot
 from cgshop2021_pyutils import Instance
 from cgshop2021_pyutils import InstanceDatabase
 
+from gui import boardgame1
 from shortestPath import BFS
 
 # list of all the robots
@@ -16,14 +17,15 @@ robot_in_dest = []
 # List of robots that have not reached their destination
 move_robot_list = []
 
-
+"C:/Users/amite/Desktop/שנה ג/פרויקט/cgshop_2021_instances_01.zip"
 def init_game():
-    x=0
-    idb = InstanceDatabase("C:/Users/amite/Desktop/שנה ג/פרויקט/cgshop_2021_instances_01.zip")
+    x = 0
+    y = 0
+    idb = InstanceDatabase("C:/Users/eli.DESKTOP-58L91HR/Documents/cgshop_2021_instances_01.zip")
     for i in idb:
         print("Instance:", i)
-        x = x + 1
-        if x == 91:
+        y = y + 1
+        if y == 1:
             break
 
     # get the board dimensions
@@ -33,24 +35,32 @@ def init_game():
     m = (l['parameters']['shape'][1])
     # create a board
     board = [[0 for i in range(n)] for j in range(m)]
+    x = m
+    global boardgame11
+    boardgame11 = boardgame1(x)
 
-
+    robnum=1
     i: Instance #just to enable typing
     # create robots
     for r in range(i.number_of_robots):
         start = Point(i.start_of(r)[0], i.start_of(r)[1])
         end = Point(i.target_of(r)[0], i.target_of(r)[1])
-        r1 = Robot(start,end)
+        r1 = Robot(start,end,robnum)
         # add robot to robotList
         robot_list.append(r1)
         # place the robot on the board
         board[i.start_of(r)[0]][i.start_of(r)[1]] = r1
+        robnum= robnum+1
 
     # where there is obstacle, put -1 (on the board)
     for o in i.obstacles:
         x = o[0]
         y = o[1]
         board[x][y] = -1
+    for r in robot_list:
+        boardgame11.robot[r.current_place.x][r.current_place.y] = r.num
+        boardgame11.robot1[r.end_place.x][r.end_place.y] = r.num
+    boardgame11.cratetable()
     return board
 
 
@@ -131,6 +141,7 @@ def move_robot(next_step, robot, board):
     prev_y = robot.current_place.y
     # delete th robot from the board
     board[prev_x][prev_y] = 0
+    boardgame11.robot[prev_x][prev_y] = 0
     #remove from the lists
     # move_robot_list.remove(robot)
     # RobotList2.remove(robot)
@@ -140,33 +151,45 @@ def move_robot(next_step, robot, board):
     robot.current_place = next_step
     # update the robot on the board
     board[next_step.x][next_step.y] = robot
+    boardgame11.robot[next_step.x][next_step.y] = robot.num
     if Point.equal(robot.current_place, robot.end_place):
         move_robot_list.remove(robot)
         robot_in_dest.append(robot)
+    boardgame11.cratetable()
+
 
 # ---------------------- Example ---------------------------
-
 def example():
-    r1 = Robot(Point(0,0), Point(0,3))
-    r2 = Robot (Point(2,2), Point(3,3))
-    r3 = Robot(Point(1,1), Point(3,0))
 
+    x = 10
+    robotMatrix2 = [[0 for i in range(x)] for j in range(x)]
+    global boardgame11
+    boardgame11 = boardgame1(x)
+    r1 = Robot(Point(0, 0), Point(6, 7), 1)
+    r2 = Robot(Point(1, 1), Point(8, 6), 2)
+    r3 = Robot(Point(8, 0), Point(0, 9), 3)
 
     robot_list.append(r1)
     robot_list.append(r2)
     robot_list.append(r3)
-    robotMatrix2 = [[0 for i in range(4)] for j in range(4)]
+
+    for r in robot_list:
+        boardgame11.robot[r.current_place.x][r.current_place.y] = r.num
+        boardgame11.robot1[r.end_place.x][r.end_place.y] = r.num
+
     robotMatrix2[0][0] = r1
-    robotMatrix2[2][2] = r2
-    robotMatrix2[1][1] = r3
+    robotMatrix2[1][1] = r2
+    robotMatrix2[8][0] = r3
+    boardgame11.cratetable()
+
     return robotMatrix2
 
 # ---------------------------------------------------------
 
 
 def main():
-    board = init_game()
+    board = example()
+    #board = init_game()
     start_game(board)
-
 if __name__ == '__main__':
     main()

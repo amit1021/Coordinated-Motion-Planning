@@ -3,12 +3,19 @@ from Point import Point
 from Robot import Robot
 from cgshop2021_pyutils import Instance
 from cgshop2021_pyutils import InstanceDatabase
+from BFS import bfs , bfs_few_steps
 
 # List of all robot
 robot_list = []
 
 # List of robots who reach their destination
 robot_in_destination = []
+
+# These arrays are used to get row and column
+# numbers of 4 neighbours of a given cell
+row_num = [-1, 0, 0, 1]
+col_num = [0, -1, 1, 0]
+
 
 def init_game():
     # y = 0 that we can choose a board
@@ -18,14 +25,14 @@ def init_game():
     for i in idb:
         print("Instance:", i)
         y = y + 1
-        if y == 1:
+        if y == 30:
             break
 
     # get the board dimensions
     k = json.dumps(i.description)
     l = json.loads(k)
     # The board is n X n
-    n = (l['parameters']['shape'][0])
+    n = (l['parameters']['shape'][0]) + 10
 
     # create a board
     board = [[0 for i in range(n)] for j in range(n)]
@@ -48,17 +55,92 @@ def init_game():
 
     # Where there is obstacle, put -1 (on board)
     for o in i.obstacles:
-        x = o[0]
-        y = o[1]
+        x = o[0] + 5
+        y = o[1] + 5
         board[x][y] = -1
+
+    return board
+
 
 def start_game(board):
     # While there are robots that have not reached their destination
     while len(robot_list) > 0:
         # Go over the robots that did not reach the destination
         for robot in robot_list:
-            path = BFS()
-            if ()
+            robot_queue_node = bfs(board, robot.current_place, robot.end_place)
+            if robot_queue_node != -1:
+                move_robot_all_path(board, robot, robot_queue_node)
+            else:
+                # Move the robot a few steps the he can
+                robot_queue_node = bfs_few_steps(board, robot.current_place, robot.end_place)
+                move_robot_few_steps(board, robot, robot_queue_node)
+
+        print("Number of robots that reach their destination:  ", len(robot_in_destination))
+        print("Number of robots that are left:  ", len(robot_list))
+        print(
+            "   0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29")
+        for i in range(len(board)):
+            print( i , board[i])
+
+        if len(robot_list) == 12:
+            print(robot_list)
+
+
+
+
+
+def move_robot_all_path(board, robot, robot_queue_node):
+    # Run on robot's path to the destination
+    for p in robot_queue_node.path:
+        # Delete the robot from is old place in the board
+        board[robot.current_place.x][robot.current_place.y] = 0
+        # Update the new point of the robot
+        robot.current_place = p
+        # Update the board with the new point of the robot
+        board[robot.current_place.x][robot.current_place.y] = robot.robot_number
+        # When the robot reach is destination
+        if Point.equal(robot.current_place, robot.end_place):
+            # Remove from robot list
+            robot_list.remove(robot)
+            # Add to list of the robots who reach their destination
+            robot_in_destination.append(robot)
+
+    # Just for checking the function (delete after)
+    if not Point.equal(robot.current_place, robot.end_place):
+        print("not reach the goal")
+
+
+def move_robot_few_steps(board,robot, robot_queue_node):
+    # Run on robot's path to the destination
+    for p in robot_queue_node.path:
+        if p == 0:
+            # Delete the robot from is old place in the board
+            board[robot.current_place.x][robot.current_place.y] = 0
+            # Update the new point of the robot
+            robot.current_place = p
+            # Update the board with the new point of the robot
+            board[robot.current_place.x][robot.current_place.y] = robot.robot_number
+            # When the robot reach is destination
+            if Point.equal(robot.current_place, robot.end_place):
+                # Remove from robot list
+                robot_list.remove(robot)
+                # Add to list of the robots who reach their destination
+                robot_in_destination.append(robot)
+        else:
+            return
+
+    # Just for checking the function (delete after)
+    if not Point.equal(robot.current_place, robot.end_place):
+        print("not reach the goal")
+
+
+def main():
+    board = init_game()
+    start_game(board)
+
+
+if __name__ == '__main__':
+    main()
 
 
 
@@ -66,33 +148,7 @@ def start_game(board):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# # This is a sample Python script.
+# This is a sample Python script.
 #
 # import json
 #

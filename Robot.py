@@ -11,7 +11,7 @@ class Robot:
             return "Current Place: " + str(self.current_place) + "End Place: " + str(self.end_place)
 
       def __repr__(self):
-            return "R" + str(self.robot_number)
+            return "R" + str(self.robot_number) + " end place " + str(self.end_place)
 
 
 

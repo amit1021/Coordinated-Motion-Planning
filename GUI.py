@@ -12,6 +12,7 @@ class boardgame1():
         pygame.init()
         if (self.height==10): WIDTH = 600
         if (self.height == 20): WIDTH = 800
+        if (self.height == 30): WIDTH = 900
 
         ROWS = self.height
         win = pygame.display.set_mode((WIDTH, WIDTH))
@@ -43,7 +44,7 @@ class boardgame1():
                     textRect = text.get_rect()
                     textRect.center = (x, y)
                     win.blit(text, textRect)
-                if (self.robot[i][j] != 0 and self.height == 20):
+                if (self.robot[i][j] != 0 and self.height == 30):
                     pygame.draw.circle(win, (0,0,128), (x, y), 10)
                     font = pygame.font.Font('freesansbold.ttf', 10)
                     text = font.render(str(self.robot[i][j]), True, (255, 255, 51))
@@ -62,7 +63,7 @@ class boardgame1():
                     textRect = text.get_rect()
                     textRect.center = (x-20, y-20)
                     win.blit(text, textRect)
-                if (self.robot1[i][j]!= 0 and self.height == 20):
+                if (self.robot1[i][j]!= 0 and self.height == 30):
                     font = pygame.font.Font('freesansbold.ttf', 10)
                     text = font.render(str(self.robot1[i][j]), True, (255, 255, 51))
                     textRect = text.get_rect()
@@ -70,12 +71,6 @@ class boardgame1():
                     win.blit(text, textRect)
 
         pygame.display.flip()
-        pygame.time.delay(300)
-
-
-
-
-
-
+        pygame.time.delay(3)
 
 

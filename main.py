@@ -1,9 +1,12 @@
 import json
+
+from MoveRobots import move_robot_all_path, move_robot_few_steps, robot_stuck
 from Point import Point
 from Robot import Robot
 from cgshop2021_pyutils import Instance
 from cgshop2021_pyutils import InstanceDatabase
 from BFS import bfs , bfs_few_steps
+from initTheGame import init_game
 
 # List of all robot
 robot_list = []
@@ -16,50 +19,6 @@ robot_in_destination = []
 row_num = [-1, 0, 0, 1]
 col_num = [0, -1, 1, 0]
 
-
-def init_game():
-    # y = 0 that we can choose a board
-    y = 0
-    # take the board instance
-    idb = InstanceDatabase("C:/Users/amite/Desktop/שנה ג/פרויקט/cgshop_2021_instances_01.zip")
-    for i in idb:
-        print("Instance:", i)
-        y = y + 1
-        if y == 30:
-            break
-
-    # get the board dimensions
-    k = json.dumps(i.description)
-    l = json.loads(k)
-    # The board is n X n
-    n = (l['parameters']['shape'][0]) + 10
-
-    # create a board
-    board = [[0 for i in range(n)] for j in range(n)]
-
-    i: Instance #just to enable typing
-    robot_number = 0
-    # create robots
-    for r in range(i.number_of_robots):
-        # The position of the robot
-        start = Point(i.start_of(r)[0] + 5, i.start_of(r)[1] + 5)
-        end = Point(i.target_of(r)[0] + 5, i.target_of(r)[1] + 5)
-        # Create robot object
-        robotObj = Robot(start,end,robot_number)
-        # Add robot to robot_list
-        robot_list.append(robotObj)
-        # Place the robot on the board
-        board[robotObj.current_place.x][robotObj.current_place.y] = robotObj.robot_number
-        # Update the counter of robots
-        robot_number = robot_number + 1
-
-    # Where there is obstacle, put -1 (on board)
-    for o in i.obstacles:
-        x = o[0] + 5
-        y = o[1] + 5
-        board[x][y] = -1
-
-    return board
 
 
 def start_game(board):
@@ -78,7 +37,7 @@ def start_game(board):
                 robot_queue_node = bfs_few_steps(board, robot.current_place, robot.end_place)
                 move_robot_few_steps(board, robot, robot_queue_node)
 
-            if len(robot_list) == 12 or len(robot_list) == 9 or len(robot_list) == 5:
+            if len(robot_list) == 84 or len(robot_list) == 77 or len(robot_list) == 5:
                 stuck = stuck + 1
             else:
                 stuck = 0
@@ -95,92 +54,14 @@ def start_game(board):
 
         print("Number of robots that reach their destination:  ", len(robot_in_destination))
         print("Number of robots that are left:  ", len(robot_list))
-        print(
-            "   0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29")
-        for i in range(len(board)):
-            print( i , board[i])
+        # print(
+        #     "   0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29")
+        # for i in range(len(board)):
+        #     print( i , board[i])
+        #
+        # if len(robot_list) <= 12:
+        #     print(robot_list)
 
-        if len(robot_list) <= 12:
-            print(robot_list)
-
-
-
-def move_robot_all_path(board, robot, robot_queue_node):
-    # Run on robot's path to the destination
-    for p in robot_queue_node.path:
-        # Delete the robot from is old place in the board
-        board[robot.current_place.x][robot.current_place.y] = 0
-        # Update the new point of the robot
-        robot.current_place = p
-        # Update the board with the new point of the robot
-        board[robot.current_place.x][robot.current_place.y] = robot.robot_number
-        # When the robot reach is destination
-        if Point.equal(robot.current_place, robot.end_place):
-            # Remove from robot list
-            robot_list.remove(robot)
-            # Add to list of the robots who reach their destination
-            robot_in_destination.append(robot)
-
-    # Just for checking the function (delete after)
-    if not Point.equal(robot.current_place, robot.end_place):
-        print("not reach the goal")
-
-
-def move_robot_few_steps(board,robot, robot_queue_node):
-    # Run on robot's path to the destination
-    for p in robot_queue_node.path:
-        if p == 0:
-            # Delete the robot from is old place in the board
-            board[robot.current_place.x][robot.current_place.y] = 0
-            # Update the new point of the robot
-            robot.current_place = p
-            # Update the board with the new point of the robot
-            board[robot.current_place.x][robot.current_place.y] = robot.robot_number
-            # When the robot reach is destination
-            if Point.equal(robot.current_place, robot.end_place):
-                # Remove from robot list
-                robot_list.remove(robot)
-                # Add to list of the robots who reach their destination
-                robot_in_destination.append(robot)
-        else:
-            return
-
-    # Just for checking the function (delete after)
-    if not Point.equal(robot.current_place, robot.end_place):
-        print("not reach the goal")
-
-
-def robot_stuck(board, robot):
-    n = len(board[0])
-    x = robot.current_place.x
-    y = robot.current_place.y - 1
-    z = 5
-    if n/2 > robot.current_place.y:
-        while y > 0:
-            if board[x][y] != -1 and  board[x][y] != 0:
-                for robot in robot_in_destination:
-                    if robot.robot_number == board[x][y]:
-                        move_robot_out_of_board(board,robot,x - z, y)
-                        break
-            y = y -1
-    else:
-        while y < n:
-            if board[x][y] != -1 and board[x][y] != 0:
-                for robot in robot_in_destination:
-                    if robot.robot_number == board[x][y]:
-                        move_robot_out_of_board(board,robot, x - z, y)
-            y = y + 1
-
-
-def move_robot_out_of_board(board, robot, i, j):
-    p = Point(i, j)
-    robot_queue_node = bfs(board, robot.current_place, p)
-    if robot_queue_node != -1:
-        move_robot_all_path(board, robot, robot_queue_node)
-    else:
-        # Move the robot a few steps the he can
-        robot_queue_node = bfs_few_steps(board, robot.current_place, robot.end_place)
-        move_robot_few_steps(board, robot, robot_queue_node)
 
 
 

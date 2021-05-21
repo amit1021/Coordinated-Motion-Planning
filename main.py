@@ -1,6 +1,7 @@
 import json
 
-from MoveRobots import move_robot_all_path, move_robot_few_steps, robot_stuck
+# import MoveRobots import move_robot_all_path, move_robot_few_steps
+from MoveRobots import move_robot_all_path, move_robot_few_steps
 from Point import Point
 from Robot import Robot
 from cgshop2021_pyutils import Instance
@@ -8,16 +9,14 @@ from cgshop2021_pyutils import InstanceDatabase
 from BFS import bfs , bfs_few_steps
 from initTheGame import init_game
 
-# List of all robot
-robot_list = []
-
-# List of robots who reach their destination
-robot_in_destination = []
 
 # These arrays are used to get row and column
 # numbers of 4 neighbours of a given cell
+from params import robot_list, getRobotListSize, getRobotList, getRobotListDestSize
+
 row_num = [-1, 0, 0, 1]
 col_num = [0, -1, 1, 0]
+
 
 
 
@@ -26,9 +25,9 @@ def start_game(board):
     stuck = 0
     number_robots = len(robot_list)
     # While there are robots that have not reached their destination
-    while len(robot_list) > 0:
+    while getRobotListSize() > 0:
         # Go over the robots that did not reach the destination
-        for robot in robot_list:
+        for robot in getRobotList():
             robot_queue_node = bfs(board, robot.current_place, robot.end_place)
             if robot_queue_node != -1:
                 move_robot_all_path(board, robot, robot_queue_node)
@@ -37,30 +36,30 @@ def start_game(board):
                 robot_queue_node = bfs_few_steps(board, robot.current_place, robot.end_place)
                 move_robot_few_steps(board, robot, robot_queue_node)
 
-            if len(robot_list) == 84 or len(robot_list) == 77 or len(robot_list) == 5:
-                stuck = stuck + 1
-            else:
-                stuck = 0
+            # if len(robot_list) == 84 or len(robot_list) == 77 or len(robot_list) == 5:
+            #     stuck = stuck + 1
+            # else:
+            #     stuck = 0
             number_robots = len(robot_list)
-            if stuck > 4:
-                robot_stuck(board, robot)
-                robot_queue_node = bfs(board, robot.current_place, robot.end_place)
-                if robot_queue_node != -1:
-                    move_robot_all_path(board, robot, robot_queue_node)
-                else:
-                    # Move the robot a few steps the he can
-                    robot_queue_node = bfs_few_steps(board, robot.current_place, robot.end_place)
-                    move_robot_few_steps(board, robot, robot_queue_node)
+            # if stuck > 4:
+            #     robot_stuck(board, robot)
+            #     robot_queue_node = bfs(board, robot.current_place, robot.end_place)
+            #     if robot_queue_node != -1:
+            #         move_robot_all_path(board, robot, robot_queue_node)
+            #     else:
+            #         # Move the robot a few steps the he can
+            #         robot_queue_node = bfs_few_steps(board, robot.current_place, robot.end_place)
+            #         move_robot_few_steps(board, robot, robot_queue_node)
 
-        print("Number of robots that reach their destination:  ", len(robot_in_destination))
+        print("Number of robots that reach their destination:  ", getRobotListDestSize())
         print("Number of robots that are left:  ", len(robot_list))
-        # print(
-        #     "   0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29")
-        # for i in range(len(board)):
-        #     print( i , board[i])
-        #
-        # if len(robot_list) <= 12:
-        #     print(robot_list)
+        print(
+            "   0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29")
+        for i in range(len(board)):
+            print( i , board[i])
+
+        if getRobotListSize() <= 12:
+            print(getRobotList())
 
 
 

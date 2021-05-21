@@ -4,7 +4,11 @@ from Robot import Robot
 from cgshop2021_pyutils import Instance
 from cgshop2021_pyutils import InstanceDatabase
 
-from main import robot_list
+
+# List of all robot
+
+# robot_list = []
+from params import addRobotToList
 
 
 def init_game():
@@ -15,7 +19,7 @@ def init_game():
     for i in idb:
         print("Instance:", i)
         y = y + 1
-        if y == 25:
+        if y == 31:
             break
 
     # get the board dimensions
@@ -37,7 +41,8 @@ def init_game():
         # Create robot object
         robotObj = Robot(start,end,robot_number)
         # Add robot to robot_list
-        robot_list.append(robotObj)
+        addRobotToList(robotObj)
+                                # robot_list.append(robotObj)
         # Place the robot on the board
         board[robotObj.current_place.x][robotObj.current_place.y] = robotObj.robot_number
         # Update the counter of robots

@@ -60,41 +60,13 @@ def start_game(board):
             # for i in range(len(board)):
             #     print(i, board[i])
 
-def example():
 
-    x = 10
-    robotMatrix2 = [[0 for i in range(x)] for j in range(x)]
-    global boardgame11
-    boardgame11 = boardgame1(x)
-    r1 = Robot(Point(0, 0), Point(6, 7), 1)
-    r2 = Robot(Point(1, 1), Point(8, 6), 2)
-    r3 = Robot(Point(8, 0), Point(0, 9), 3)
-
-
-    for r in robot_list:
-        boardgame11.robot[r.current_place.x][r.current_place.y] = r.robot_number
-        boardgame11.robot1[r.end_place.x][r.end_place.y] = r.robot_number
-
-    robotMatrix2[0][0] = r1
-    robotMatrix2[1][1] = r2
-    robotMatrix2[8][0] = r3
-    boardgame11.cratetable()
-
-    return robotMatrix2
 
 def main():
-        #x=2
-        #pygame.init()
-        #screen = pygame.display.set_mode((600, 600))
-        #pygame.display.set_caption("robot")
-        #x = 10
-        #global boardgame11
-        #boardgame11 = boardgame1(x)
-        #board = example()
-        #print(board)
+       
         board = init_game()
         start_game(board)
-        #print(board)
+       
 
 
 if __name__ == '__main__':

@@ -1,39 +1,42 @@
 import json
 
 # import MoveRobots import move_robot_all_path, move_robot_few_steps
+import pygame
+
+from GUI import boardgame1
 from MoveRobots import move_robot_all_path, move_robot_few_steps, moveRobotStuck
 from Point import Point
 from Robot import Robot
 from cgshop2021_pyutils import Instance
 from cgshop2021_pyutils import InstanceDatabase
-from BFS import bfs , bfs_few_steps
+from BFS import bfs, bfs_few_steps
 from initTheGame import init_game
-
-
 # These arrays are used to get row and column
 # numbers of 4 neighbours of a given cell
-from params import getRobotListDestSize, getRobotToListNot_destSize, getRobotToListNot_dest
-
-
-
-
+from params import getRobotListDestSize, getRobotToListNot_destSize, getRobotToListNot_dest, robot_list, addRobotToList, \
+    addRobotToListNot_dest
 
 
 def start_game(board):
     # To check if there is stuck robots.
     stuck = 0
     number_robots = getRobotToListNot_destSize()
+    boardgame2 = boardgame1(30)
+    for r in robot_list:
+        boardgame2.robot[r.current_place.x][r.current_place.y] = r.robot_number
+        boardgame2.robot1[r.end_place.x][r.end_place.y] = r.robot_number
+    boardgame1.cratetable(boardgame2)
     # While there are robots that have not reached their destination
     while getRobotToListNot_destSize() > 0:
        # Go over the robots that did not reach the destination
         for robot in getRobotToListNot_dest():
             robot_queue_node = bfs(board, robot.current_place, robot.end_place)
             if robot_queue_node != -1:
-                move_robot_all_path(board, robot, robot_queue_node)
+                move_robot_all_path(board, robot, robot_queue_node, boardgame2)
             else:
                 # Move the robot a few steps the he can
                 robot_queue_node = bfs_few_steps(board, robot.current_place, robot.end_place)
-                move_robot_few_steps(board, robot, robot_queue_node)
+                move_robot_few_steps(board, robot, robot_queue_node, boardgame2)
 
         print("Number of robots that reach their destination:  ", getRobotListDestSize())
         print("Number of robots that are left:  ", len(getRobotToListNot_dest()))
@@ -51,25 +54,56 @@ def start_game(board):
             for robot in getRobotToListNot_dest():
                 if getRobotToListNot_destSize() == 1:
                     print("one left")
-                moveRobotStuck(board, robot)
-
+                moveRobotStuck(board, robot, boardgame2)
             # print(
             #     "   0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29")
             # for i in range(len(board)):
             #     print(i, board[i])
 
+def example():
+
+    x = 10
+    robotMatrix2 = [[0 for i in range(x)] for j in range(x)]
+    global boardgame11
+    boardgame11 = boardgame1(x)
+    r1 = Robot(Point(0, 0), Point(6, 7), 1)
+    r2 = Robot(Point(1, 1), Point(8, 6), 2)
+    r3 = Robot(Point(8, 0), Point(0, 9), 3)
 
 
+    for r in robot_list:
+        boardgame11.robot[r.current_place.x][r.current_place.y] = r.robot_number
+        boardgame11.robot1[r.end_place.x][r.end_place.y] = r.robot_number
 
+    robotMatrix2[0][0] = r1
+    robotMatrix2[1][1] = r2
+    robotMatrix2[8][0] = r3
+    boardgame11.cratetable()
 
+    return robotMatrix2
 
 def main():
-    board = init_game()
-    start_game(board)
+        #x=2
+        #pygame.init()
+        #screen = pygame.display.set_mode((600, 600))
+        #pygame.display.set_caption("robot")
+        #x = 10
+        #global boardgame11
+        #boardgame11 = boardgame1(x)
+        #board = example()
+        #print(board)
+        board = init_game()
+        start_game(board)
+        #print(board)
 
 
 if __name__ == '__main__':
     main()
+
+
+
+
+
 
 
 

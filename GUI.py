@@ -16,12 +16,12 @@ class boardgame1():
 
         ROWS = self.height
         win = pygame.display.set_mode((WIDTH, WIDTH))
-        pygame.display.set_caption("robot")
+        pygame.display.set_caption("Coordinated-Motion-Planning")
         gap = WIDTH // ROWS
         # Starting points
         x = 0
         y = 0
-        bg1 = pygame.image.load('try2.jpg')
+        bg1 = pygame.image.load('./Images/background.jpeg')
         win.blit(bg1, (0, 0))
         # win.fill((0, 0, 0))
 
@@ -72,4 +72,5 @@ class boardgame1():
                     win.blit(text, textRect)
         pygame.display.flip()
         pygame.time.delay(5)
+
         return

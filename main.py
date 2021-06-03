@@ -1,27 +1,20 @@
-import json
-
-# import MoveRobots import move_robot_all_path, move_robot_few_steps
-import pygame
 
 from GUI import boardgame1
 from MoveRobots import move_robot_all_path, move_robot_few_steps, moveRobotStuck
 from Point import Point
-from Robot import Robot
-from cgshop2021_pyutils import Instance
-from cgshop2021_pyutils import InstanceDatabase
+import time
 from BFS import bfs, bfs_few_steps
 from initTheGame import init_game
-# These arrays are used to get row and column
-# numbers of 4 neighbours of a given cell
-from params import getRobotListDestSize, getRobotToListNot_destSize, getRobotToListNot_dest, robot_list, addRobotToList, \
-    addRobotToListNot_dest
+
+from params import getRobotListDestSize, getRobotToListNot_destSize, getRobotToListNot_dest, robot_list, FindRobotByNumber
 
 
 def start_game(board):
     # To check if there is stuck robots.
     stuck = 0
     number_robots = getRobotToListNot_destSize()
-    # the next lines for the gui
+
+    # The next lines for the gui
     boardgame2 = boardgame1(len(board))
     for r in robot_list:
         boardgame2.robot[r.current_place.x][r.current_place.y] = r.robot_number
@@ -31,6 +24,8 @@ def start_game(board):
             if board[i][j] == -1:
                 boardgame2.robot1[i][j] = -1
     boardgame1.cratetable(boardgame2)
+
+
     # While there are robots that have not reached their destination
     while getRobotToListNot_destSize() > 0:
        # Go over the robots that did not reach the destination
@@ -66,15 +61,40 @@ def start_game(board):
             #     print(i, board[i])
 
 
-def main():
+def start_game2(board):
+    #GUI
+    boardgame2 = boardgame1(30)
+    for r in robot_list:
+        boardgame2.robot[r.current_place.x][r.current_place.y] = r.robot_number
+        boardgame2.robot1[r.end_place.x][r.end_place.y] = r.robot_number
+    boardgame1.cratetable(boardgame2)
+    flag = False
 
-        board = init_game()
-        start_game(board)
+    for k in range(len(board)):
+        if board[0][k] == 0:
+            for i in range(len(board) - 5):
+                if flag:
+                    flag = False
+                    break
+                for j in range(len(board) - 5):
+                    if board[i + 5][j + 5] != 0 and board[i + 5][j + 5] != -1:
+                        robot = FindRobotByNumber(board[i + 5][j + 5])
+                        p = Point(0, k)
+                        robot_queue_node = bfs(board, robot.current_place, p)
+                        if robot_queue_node != -1:
+                            move_robot_all_path(board, robot, robot_queue_node, boardgame2)
+                            flag = True
+                            break
+
+
+    # while getRobotToListNot_destSize() > 0:
+
+
+def main():
+    board = init_game()
+    # start_game(board)
+    start_game2(board)
+
 
 if __name__ == '__main__':
     main()
-
-
-
-
-

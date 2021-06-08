@@ -40,11 +40,11 @@ def move_robot_to_dest(board, robot, robot_queue_node, boardgame1):
 
         boardgame1.robot[robot.current_place.x][robot.current_place.y] = robot.robot_number
         number_of_steps += 1
-        if Point.equal(robot.current_place, robot.end_place):
-            # Remove from robot list
-            removeRobotToListNot_dest(robot)
-            # Add to list of the robots who reach their destination
-            addRobotToDest(robot)
+        # if Point.equal(robot.current_place, robot.end_place):
+        #     # Remove from robot list
+        #     removeRobotToListNot_dest(robot)
+        #     # Add to list of the robots who reach their destination
+        #     addRobotToDest(robot)
 
     boardgame1.cratetable()
     return number_of_steps

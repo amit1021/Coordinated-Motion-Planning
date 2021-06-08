@@ -182,9 +182,12 @@ def start_game2(board):
             i -= 1
         low_column -= 1
 
-    print(getRobotToListNot_destSize())
-    if getRobotToListNot_destSize() >= 1:
-        print("Goalll")
+    for r in robot_list:
+        if not Point.equal(r.current_place, r.end_place):
+            print("r.current_place: ", r.current_place)
+            print("r.end_place: ", r.end_place)
+            print("robot number ", r.robot_number)
+            print("not good!!")
 
     print("number_of_steps: ",number_of_steps)
 

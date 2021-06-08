@@ -18,8 +18,9 @@ def init_game():
     idb = InstanceDatabase("C:/Users/amite/Desktop/שנה ג/פרויקט/cgshop_2021_instances_01.zip")
     for i in idb:
         print("Instance:", i)
+        print(y + 1)
         y = y + 1
-        if y == 1:
+        if y == 5:
             break
 
     # get the board dimensions

@@ -19,7 +19,7 @@ def init_game():
     for i in idb:
         print("Instance:", i)
         y = y + 1
-        if y == 30:
+        if y == 1:
             break
 
     # get the board dimensions

@@ -13,6 +13,7 @@ class boardgame1():
         if (self.height == 20): WIDTH = 800
         if (self.height == 30): WIDTH = 900
         if (self.height == 60): WIDTH = 900
+        if (self.height == 110): WIDTH = 900
 
         ROWS = self.height
         win = pygame.display.set_mode((WIDTH, WIDTH))
@@ -71,6 +72,6 @@ class boardgame1():
                     textRect.center = (x, y)
                     win.blit(text, textRect)
         pygame.display.flip()
-        pygame.time.delay(5)
+        pygame.time.delay(1)
 
         return

@@ -8,6 +8,9 @@ robot_in_destination = []
 # List of robots who not reach their destination
 robot_list_not_dest = []
 
+# Number of steps
+steps_number = 0
+
 
 def addRobotToList(robot):
     robot_list.append(robot)
@@ -34,6 +37,11 @@ def addRobotToDest(robot):
     return
 
 
+# def addStep():
+#     steps_number
+#     return
+
+
 def removeRobotToDest(robot):
     robot_in_destination.remove(robot)
     return
@@ -41,6 +49,10 @@ def removeRobotToDest(robot):
 
 def getRobotListSize():
     return len(robot_list)
+
+
+# def getSteps():
+#     return steps_number
 
 
 def getRobotList():

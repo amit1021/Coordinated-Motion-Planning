@@ -20,7 +20,7 @@ def init_game():
         print("Instance:", i)
         print(y + 1)
         y = y + 1
-        if y == 5:
+        if y == 42:
             break
 
     # get the board dimensions

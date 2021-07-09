@@ -23,7 +23,6 @@ def move_robot(board, robot, robot_queue_node ,boardgame1):
         number_of_steps += 1
         # Add step
         # number_of_steps = number_of_steps + 1
-
     boardgame1.cratetable()
     return number_of_steps
 

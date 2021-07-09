@@ -7,7 +7,9 @@ from params import addRobotToDest, removeRobotToListNot_dest, FindRobotByNumber,
 
 def move_robot(board, robot, robot_queue_node ,boardgame1):
     number_of_steps = 0
-    # Run on robot's path to the destination
+    if robot.robot_number == 0:
+        print("stop")
+        # Run on robot's path to the destination
     for p in robot_queue_node.path:
         # Delete the robot from is old place in the board
         board[robot.current_place.x][robot.current_place.y] = 0
@@ -27,6 +29,8 @@ def move_robot(board, robot, robot_queue_node ,boardgame1):
 
 
 def move_robot_to_dest(board, robot, robot_queue_node, boardgame1):
+    if robot.robot_number == 0:
+        print("stop")
     number_of_steps = 0
     # Run on robot's path to the destination
     for p in robot_queue_node.path:

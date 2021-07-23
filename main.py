@@ -1,5 +1,4 @@
 
-from GUI import boardgame1
 from Init_fram import frames, get_robot_out
 from MoveRobots import move_robot_all_path, move_robot_few_steps, moveRobotStuck
 from Move_Robot import move_robot, move_robot_to_dest
@@ -19,7 +18,7 @@ def start_game(board):
 
 
     # The next lines for the gui
-    boardgame2 = boardgame1(len(board))
+    # boardgame2 = boardgame1(len(board))
     # for r in robot_list:
     #     boardgame2.robot[r.current_place.x][r.current_place.y] = r.robot_number
     #     boardgame2.robot1[r.end_place.x][r.end_place.y] = r.robot_number
@@ -62,7 +61,7 @@ def start_game(board):
             for robot in getRobotToListNot_dest():
                 if getRobotToListNot_destSize() == 1:
                     print("one left")
-                number_of_steps = moveRobotStuck(board, robot, boardgame2, number_of_steps)
+                number_of_steps = moveRobotStuck(board, robot, number_of_steps)
                 print("Number of steps: ", number_of_steps)
 
 
@@ -75,17 +74,20 @@ def start_game(board):
 def start_game2(board):
     n = len(board)
     number_of_steps = 0
+
+    # create board with the final place of the robots
     robot_final_place = [[0 for i in range(n)] for j in range(n)]
     for r in robot_list:
         robot_final_place[r.end_place.x][r.end_place.y] = r.robot_number
 
     # GUI
-    boardgame2 = boardgame1(30)
-    for r in robot_list:
-        boardgame2.robot[r.current_place.x][r.current_place.y] = r.robot_number
-        boardgame2.robot1[r.end_place.x][r.end_place.y] = r.robot_number
-    boardgame1.cratetable(boardgame2)
+    # boardgame2 = boardgame1(30)
+    # for r in robot_list:
+    #     boardgame2.robot[r.current_place.x][r.current_place.y] = r.robot_number
+    #     boardgame2.robot1[r.end_place.x][r.end_place.y] = r.robot_number
+    # boardgame1.cratetable(boardgame2)
 
+    # The number of rows that the robots will be in a frame
     number_of_robot = len(robot_list)
     blank_spcae = 0
     count = number_of_robot
@@ -96,7 +98,8 @@ def start_game2(board):
         blank_spcae += 1
     print("number of blank: " ,blank_spcae)
 
-    num = frames(board, boardgame2,blank_spcae)
+    # Moves the robots to the board frame
+    num = frames(board,blank_spcae)
     number_of_steps +=num
 
     print("number_of_steps: ",number_of_steps)
@@ -118,10 +121,10 @@ def start_game2(board):
                 if robot != -1:
                     robot_queue_node = bfs(board, robot.current_place, robot.end_place)
                     if robot_queue_node != -1:
-                        num = move_robot_to_dest(board, robot, robot_queue_node, boardgame2)
+                        num = move_robot_to_dest(board, robot, robot_queue_node)
                         number_of_steps += num
                     else:
-                        get_robot_out(board, robot, boardgame2, blank_spcae)
+                        get_robot_out(board, robot, blank_spcae)
                 else:
                     print("robot equal -1")
             print("number_of_steps: ", number_of_steps)
@@ -137,10 +140,10 @@ def start_game2(board):
                 if robot != -1:
                     robot_queue_node = bfs(board, robot.current_place, robot.end_place)
                     if robot_queue_node != -1:
-                        num = move_robot_to_dest(board, robot, robot_queue_node, boardgame2)
+                        num = move_robot_to_dest(board, robot, robot_queue_node)
                         number_of_steps += num
                     else:
-                        get_robot_out(board, robot, boardgame2, blank_spcae)
+                        get_robot_out(board, robot, blank_spcae)
                 else:
                     print("robot equal -1")
             print("number_of_steps: ", number_of_steps)
@@ -156,10 +159,10 @@ def start_game2(board):
                 if robot != -1:
                     robot_queue_node = bfs(board, robot.current_place, robot.end_place)
                     if robot_queue_node != -1:
-                       num = move_robot_to_dest(board, robot, robot_queue_node, boardgame2)
+                       num = move_robot_to_dest(board, robot, robot_queue_node)
                        number_of_steps += num
                     else:
-                        get_robot_out(board, robot, boardgame2, blank_spcae)
+                        get_robot_out(board, robot, blank_spcae)
                 else:
                     print("robot equal -1")
             print("number_of_steps: ", number_of_steps)
@@ -175,26 +178,34 @@ def start_game2(board):
                 if robot != -1:
                     robot_queue_node = bfs(board, robot.current_place, robot.end_place)
                     if robot_queue_node != -1:
-                        num = move_robot_to_dest(board, robot, robot_queue_node, boardgame2)
+                        num = move_robot_to_dest(board, robot, robot_queue_node)
                         number_of_steps += num
                     else:
-                        get_robot_out(board, robot, boardgame2, blank_spcae)
+                        get_robot_out(board, robot, blank_spcae)
                 else:
                     print("robot equal -1")
             print("number_of_steps: ", number_of_steps)
             i -= 1
         low_column -= 1
 
-    for r in robot_list:
-        if not Point.equal(r.current_place, r.end_place):
-            print("r.current_place: ", r.current_place)
-            print("r.end_place: ", r.end_place)
-            print("robot number ", r.robot_number)
-            print("not good!!")
+    not_good = 0
+    for i in range(n):
+        for j in range(n):
+            if robot_final_place[i][j] > 0:
+                if robot_final_place[i][j] != board[i][j]:
+                    not_good +=1
+                    print("place not good", i, " ", j ," ",robot_final_place[i][j])
+    print("number of not good: ", not_good)
+
+    print(
+        "   0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29")
+    for i in range(len(board)):
+        print(i, board[i])
+
 
     print("number_of_steps: ",number_of_steps)
 
-    time.sleep(10)
+    time.sleep(2)
 
 
 def add_steps(n, number_of_steps):

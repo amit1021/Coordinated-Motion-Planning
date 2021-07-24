@@ -130,8 +130,11 @@ def move_robots_up(board, robot, blank_spcae):
             plus_steps = 1
             while robot_queue_node == -1:
                 point_temp = Point(p.x + number_steps_out + plus_steps, p.y + counter)
-                plus_steps += 1
-                robot_queue_node = bfs(board, r.current_place, point_temp)
+                if is_valid(p.x + number_steps_out + plus_steps, p.y + counter, len(board),  len(board)):
+                    robot_queue_node = bfs(board, r.current_place, point_temp)
+                    plus_steps += 1
+                else:
+                    break
 
             if robot_queue_node != -1:
                 dest = Point(r.current_place.x , r.current_place.y)
@@ -164,10 +167,11 @@ def move_robots_up(board, robot, blank_spcae):
             plus_steps = 1
             while robot_queue_node == -1:
                 point_temp = Point(p.x + number_steps_out + plus_steps, p.y - counter)
-                plus_steps += 1
-                robot_queue_node = bfs(board, r.current_place, point_temp)
-
-
+                if is_valid(p.x + number_steps_out + plus_steps, p.y - counter, len(board),  len(board)):
+                    robot_queue_node = bfs(board, r.current_place, point_temp)
+                    plus_steps += 1
+                else:
+                    break
             if robot_queue_node != -1:
                 dest = Point(r.current_place.x , r.current_place.y)
                 # add to back list
@@ -179,6 +183,8 @@ def move_robots_up(board, robot, blank_spcae):
                 counter -= 1
             else:
                 print("========================================================== -1  (move_robots_up 2) BFS")
+                counter -= 1
+
 
         # move robot to final place
         num = move_robot_to_final_place(board, robot)
@@ -319,7 +325,6 @@ def move_robots_left(board, robot, blank_space):
             plus_steps = 1
             while robot_queue_node == -1:
                 point_temp = Point(p.x + counter, p.y + number_steps_out + plus_steps)
-                plus_steps += 1
                 if is_valid(p.x + counter, p.y + number_steps_out + plus_steps, len(board), len(board)):
                     robot_queue_node = bfs(board, r.current_place, point_temp)
                     plus_steps += 1
@@ -367,8 +372,11 @@ def move_robots_left(board, robot, blank_space):
             plus_steps = 1
             while robot_queue_node == -1:
                 point_temp = Point(p.x - counter, p.y + number_steps_out + plus_steps)
-                plus_steps += 1
-                robot_queue_node = bfs(board, r.current_place, point_temp)
+                if is_valid(p.x - counter, p.y + number_steps_out + plus_steps, len(board), len(board)):
+                    robot_queue_node = bfs(board, r.current_place, point_temp)
+                    plus_steps += 1
+                else:
+                    break
 
 
             # if robot_queue_node == -1:
@@ -424,8 +432,11 @@ def move_robots_right(board, robot, blank_spcae):
             plus_steps = 1
             while robot_queue_node == -1:
                 point_temp = Point(p.x + counter, p.y - number_steps_out - plus_steps)
-                plus_steps += 1
-                robot_queue_node = bfs(board, r.current_place, point_temp)
+                if is_valid(p.x + counter, p.y - number_steps_out - plus_steps, len(board), len(board)):
+                    robot_queue_node = bfs(board, r.current_place, point_temp)
+                    plus_steps += 1
+                else:
+                    break
 
             # if robot_queue_node == -1:
             #     point_temp = Point(p.x + counter, p.y - number_steps_out - 2)
@@ -467,9 +478,12 @@ def move_robots_right(board, robot, blank_spcae):
             plus_steps = 1
             while robot_queue_node == -1:
                 point_temp = Point(p.x - counter, p.y - number_steps_out - plus_steps)
-                plus_steps += 1
-                robot_queue_node = bfs(board, r.current_place, point_temp)
 
+                if is_valid(p.x - counter, p.y - number_steps_out - plus_steps, len(board),  len(board)):
+                    robot_queue_node = bfs(board, r.current_place, point_temp)
+                    plus_steps += 1
+                else:
+                    break
             if robot_queue_node != -1:
                 dest = Point(r.current_place.x, r.current_place.y)
                 # add to back list

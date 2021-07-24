@@ -23,6 +23,8 @@ def move_robot(board, robot, robot_queue_node ):
         number_of_steps += 1
     # boardgame1.cratetable()
     print("robot moved : ", robot.robot_number)
+    if robot.robot_number == 286:
+        print("140")
     return number_of_steps
 
 
@@ -43,6 +45,8 @@ def move_robot_to_dest(board, robot, robot_queue_node):
         number_of_steps += 1
 
     # boardgame1.cratetable()
+    if robot.robot_number ==21:
+        print("21")
     print("robot in dest : ", robot.robot_number)
     return number_of_steps
 

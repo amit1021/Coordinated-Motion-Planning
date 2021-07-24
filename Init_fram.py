@@ -1,4 +1,4 @@
-from BFS import bfs
+from BFS import bfs, is_valid
 from Move_Robot import move_robot, move_robot_to_dest
 from Point import Point
 from RobotPoint import RobotPoint
@@ -85,8 +85,6 @@ def get_direction(p, n, blank_spcae):
 def get_robot_out(board, robot, blank_spcae):
     p = robot.current_place
     n = len(board)
-    if robot.robot_number == 41:
-        print( " 41")
     direction = get_direction(p, n, blank_spcae)
     if direction == "UP":
         move_robots_up(board, robot, blank_spcae)
@@ -99,7 +97,7 @@ def get_robot_out(board, robot, blank_spcae):
         print("DOWN")
     if direction == "LEFT":
         print("LEFT")
-        move_robots_left(board, robot)
+        move_robots_left(board, robot, blank_spcae)
 
 
 def move_robots_up(board, robot, blank_spcae):
@@ -125,6 +123,16 @@ def move_robots_up(board, robot, blank_spcae):
                 continue
             point_temp = Point(p.x + number_steps_out + 1, p.y + counter)
             robot_queue_node = bfs(board, r.current_place, point_temp)
+
+            # if robot_queue_node == -1:
+            #     point_temp = Point(p.x + number_steps_out + 2, p.y - counter)
+            #     robot_queue_node = bfs(board, r.current_place, point_temp)
+            plus_steps = 1
+            while robot_queue_node == -1:
+                point_temp = Point(p.x + number_steps_out + plus_steps, p.y + counter)
+                plus_steps += 1
+                robot_queue_node = bfs(board, r.current_place, point_temp)
+
             if robot_queue_node != -1:
                 dest = Point(r.current_place.x , r.current_place.y)
                 # add to back list
@@ -134,8 +142,6 @@ def move_robots_up(board, robot, blank_spcae):
                 num = move_robot(board, r, robot_queue_node)
                 number_of_steps += num
                 counter -= 1
-            else:
-                print("========================================================== -1 (move_robots_up 1) BFS")
 
         # move robot to final place
         move_robot_to_final_place(board, robot)
@@ -151,6 +157,17 @@ def move_robots_up(board, robot, blank_spcae):
                 continue
             point_temp = Point(p.x + number_steps_out + 1, p.y - counter)
             robot_queue_node = bfs(board, r.current_place, point_temp)
+
+            # if robot_queue_node == -1:
+            #     point_temp = Point(p.x + number_steps_out + 2, p.y - counter)
+            #     robot_queue_node = bfs(board, r.current_place, point_temp)
+            plus_steps = 1
+            while robot_queue_node == -1:
+                point_temp = Point(p.x + number_steps_out + plus_steps, p.y - counter)
+                plus_steps += 1
+                robot_queue_node = bfs(board, r.current_place, point_temp)
+
+
             if robot_queue_node != -1:
                 dest = Point(r.current_place.x , r.current_place.y)
                 # add to back list
@@ -186,21 +203,32 @@ def move_robots_down(board, robot, blank_spcae):
         counter += 1
         x -= 1
     if counter == 0:
-        print("0")
+        print("0 ---------------------------------------------------------------------")
 
     number_steps_out = counter
     if p.y < n / 2:
         while counter > 0:
             r = FindRobotByNumber(board[p.x - counter][p.y])
             if r == -1:
-                print("-1")
+                print("-1 --------------------------------------------------------------")
             if r.robot_number == 0:
                 counter -= 1
                 continue
             point_temp = Point(p.x - number_steps_out - counter - 1, p.y + counter)
             robot_queue_node = bfs(board, r.current_place, point_temp)
-            if robot_queue_node  == -1:
-                print("")
+
+            # if robot_queue_node == -1:
+            #     point_temp = Point(p.x - number_steps_out - 2, p.y - counter)
+            #     robot_queue_node = bfs(board, r.current_place, point_temp)
+            plus_steps = 1
+            while robot_queue_node == -1:
+                point_temp = Point(p.x - number_steps_out - counter - plus_steps, p.y + counter)
+                if is_valid(p.x - number_steps_out - counter - plus_steps, p.y + counter , len(board),  len(board)):
+                    robot_queue_node = bfs(board, r.current_place, point_temp)
+                    plus_steps += 1
+                else:
+                    break
+
             if robot_queue_node != -1:
                 dest = Point(r.current_place.x , r.current_place.y)
                 # add to back list
@@ -209,6 +237,9 @@ def move_robots_down(board, robot, blank_spcae):
                 # move robot to new place
                 num = move_robot(board, r, robot_queue_node)
                 number_of_steps += num
+                counter -= 1
+            else:
+                print("========================================================== -1  BFS")
                 counter -= 1
 
         # move robot to final place
@@ -227,6 +258,20 @@ def move_robots_down(board, robot, blank_spcae):
                 continue
             point_temp = Point(p.x - number_steps_out - 1, p.y - counter)
             robot_queue_node = bfs(board, r.current_place, point_temp)
+
+            # if robot_queue_node == -1:
+            #     point_temp = Point(p.x - number_steps_out - 2, p.y - counter)
+            #     robot_queue_node = bfs(board, r.current_place, point_temp)
+
+            plus_steps = 1
+            while robot_queue_node == -1:
+                point_temp = Point(p.x - number_steps_out - plus_steps, p.y - counter)
+                if is_valid(p.x - number_steps_out - plus_steps, p.y - counter, len(board),  len(board)):
+                    robot_queue_node = bfs(board, r.current_place, point_temp)
+                    plus_steps += 1
+                else:
+                    break
+
             if robot_queue_node != -1:
                 dest = Point(r.current_place.x , r.current_place.y)
                 # add to back list
@@ -235,7 +280,10 @@ def move_robots_down(board, robot, blank_spcae):
                 # move robot to new place
                 num = move_robot(board, r, robot_queue_node)
                 number_of_steps += num
+                counter -= 1
 
+            else:
+                print("========================================================== -1  BFS")
                 counter -= 1
 
         # move robot to final place
@@ -247,7 +295,7 @@ def move_robots_down(board, robot, blank_spcae):
         number_of_steps += num
 
 
-def move_robots_left(board, robot):
+def move_robots_left(board, robot, blank_space):
     number_of_steps = 0
     robot_old_place = []
     p = robot.current_place
@@ -263,8 +311,28 @@ def move_robots_left(board, robot):
     if p.x < n / 2:
         while counter > 0:
             r = FindRobotByNumber(board[p.x][p.y + counter])
+            if r.robot_number == 0:
+                counter -= 1
+                continue
             point_temp = Point(p.x + counter, p.y + number_steps_out + 1)
             robot_queue_node = bfs(board, r.current_place, point_temp)
+            plus_steps = 1
+            while robot_queue_node == -1:
+                point_temp = Point(p.x + counter, p.y + number_steps_out + plus_steps)
+                plus_steps += 1
+                if is_valid(p.x + counter, p.y + number_steps_out + plus_steps, len(board), len(board)):
+                    robot_queue_node = bfs(board, r.current_place, point_temp)
+                    plus_steps += 1
+                else:
+                    break
+
+
+            # if robot_queue_node == -1:
+            #     if r.current_place.y < blank_space:
+            #         point_temp = Point(p.x + counter, p.y + blank_space - r.current_place.y + 2)
+            #     else:
+            #         point_temp = Point(p.x + counter, p.y + number_steps_out + 2)
+
             if robot_queue_node != -1:
                 dest = Point(r.current_place.x , r.current_place.y)
                 # add to back list
@@ -274,28 +342,8 @@ def move_robots_left(board, robot):
                 num = move_robot(board, r, robot_queue_node)
                 number_of_steps += num
                 counter -= 1
-
-        # move robot to final place
-        num = move_robot_to_final_place(board, robot)
-        number_of_steps += num
-
-        # reverse the robots -> return robots
-        num = move_robots_back(board, robot_old_place)
-        number_of_steps += num
-
-    if p.x >= n / 2:
-        while counter > 0:
-            r = FindRobotByNumber(board[p.x][p.y + counter])
-            point_temp = Point(p.x - counter, p.y + number_steps_out + 1)
-            robot_queue_node = bfs(board, r.current_place, point_temp)
-            if robot_queue_node != -1:
-                dest = Point(r.current_place.x, r.current_place.y)
-                # add to back list
-                robot_point = RobotPoint(r, dest)
-                robot_old_place.append(robot_point)
-                # move robot to new place
-                num = move_robot(board, r, robot_queue_node)
-                number_of_steps += num
+            else:
+                print("========================================================== -1  BFS")
                 counter -= 1
 
         # move robot to final place
@@ -307,6 +355,47 @@ def move_robots_left(board, robot):
         number_of_steps += num
 
 
+    if p.x >= n / 2:
+        while counter > 0:
+            r = FindRobotByNumber(board[p.x][p.y + counter])
+            if r.robot_number == 0:
+                counter -= 1
+                continue
+            point_temp = Point(p.x - counter, p.y + number_steps_out + 1)
+            robot_queue_node = bfs(board, r.current_place, point_temp)
+
+            plus_steps = 1
+            while robot_queue_node == -1:
+                point_temp = Point(p.x - counter, p.y + number_steps_out + plus_steps)
+                plus_steps += 1
+                robot_queue_node = bfs(board, r.current_place, point_temp)
+
+
+            # if robot_queue_node == -1:
+            #     point_temp = Point(p.x + counter, p.y + number_steps_out + 2)
+            #     robot_queue_node = bfs(board, r.current_place, point_temp)
+
+            if robot_queue_node != -1:
+                dest = Point(r.current_place.x, r.current_place.y)
+                # add to back list
+                robot_point = RobotPoint(r, dest)
+                robot_old_place.append(robot_point)
+                # move robot to new place
+                num = move_robot(board, r, robot_queue_node)
+                number_of_steps += num
+                counter -= 1
+            else:
+                print("========================================================== -1  BFS")
+                counter -= 1
+
+
+        # move robot to final place
+        num = move_robot_to_final_place(board, robot)
+        number_of_steps += num
+
+        # reverse the robots -> return robots
+        num = move_robots_back(board, robot_old_place)
+        number_of_steps += num
 
 def move_robots_right(board, robot, blank_spcae):
     number_of_steps = 0
@@ -331,8 +420,17 @@ def move_robots_right(board, robot, blank_spcae):
                 continue
             point_temp = Point(p.x + counter, p.y - number_steps_out - 1)
             robot_queue_node = bfs(board, r.current_place, point_temp)
-            if robot_queue_node == -1:
-                print("robot_queue_node == 1")
+
+            plus_steps = 1
+            while robot_queue_node == -1:
+                point_temp = Point(p.x + counter, p.y - number_steps_out - plus_steps)
+                plus_steps += 1
+                robot_queue_node = bfs(board, r.current_place, point_temp)
+
+            # if robot_queue_node == -1:
+            #     point_temp = Point(p.x + counter, p.y - number_steps_out - 2)
+            #     robot_queue_node = bfs(board, r.current_place, point_temp)
+
             if robot_queue_node != -1:
                 dest = Point(r.current_place.x , r.current_place.y)
                 # add to back list
@@ -341,6 +439,9 @@ def move_robots_right(board, robot, blank_spcae):
                 # move robot to new place
                 num = move_robot(board, r, robot_queue_node)
                 number_of_steps += num
+                counter -= 1
+            else:
+                print("========================================================== -1  BFS")
                 counter -= 1
 
         # move robot to final place
@@ -359,6 +460,16 @@ def move_robots_right(board, robot, blank_spcae):
                 continue
             point_temp = Point(p.x - counter, p.y - number_steps_out - 1)
             robot_queue_node = bfs(board, r.current_place, point_temp)
+
+            # if robot_queue_node == -1:
+            #     point_temp = Point(p.x + counter, p.y - number_steps_out - 2)
+            #     robot_queue_node = bfs(board, r.current_place, point_temp)
+            plus_steps = 1
+            while robot_queue_node == -1:
+                point_temp = Point(p.x - counter, p.y - number_steps_out - plus_steps)
+                plus_steps += 1
+                robot_queue_node = bfs(board, r.current_place, point_temp)
+
             if robot_queue_node != -1:
                 dest = Point(r.current_place.x, r.current_place.y)
                 # add to back list
@@ -368,6 +479,10 @@ def move_robots_right(board, robot, blank_spcae):
                 num = move_robot(board, r, robot_queue_node)
                 number_of_steps += num
                 counter -= 1
+            else:
+                print("========================================================== -1  BFS")
+                counter -= 1
+
 
         # move robot to final place
         num = move_robot_to_final_place(board, robot)

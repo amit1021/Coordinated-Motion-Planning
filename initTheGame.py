@@ -20,7 +20,7 @@ def init_game():
         print("Instance:", i)
         print(y + 1)
         y = y + 1
-        if y == 1:
+        if y == 42:
             break
 
     # get the board dimensions
@@ -29,40 +29,22 @@ def init_game():
     # The board is n X n
     n = (l['parameters']['shape'][0]) + 10
 
-    i: Instance #just to enable typing
-
-    # # Finds how many lines to add to the board
-    # blank_spcae = 0
-    # count = i.number_of_robots
-    # q = 0
-    # while count > 0:
-    #     count -= (n - q) * 4
-    #     q += 2
-    #     blank_spcae += 1
-    # print("number of blank: ", blank_spcae)
-    #
-    # # board length with expansion
-    # x = 2 * (3 + blank_spcae)
-    # n = (l['parameters']['shape'][0]) + x
-
     # create a board
     board = [[0 for i in range(n)] for j in range(n)]
 
+    i: Instance #just to enable typing
     robot_number = 0
     # create robots
     for r in range(i.number_of_robots):
-
         # The position of the robot
         start = Point(i.start_of(r)[0] + 5, i.start_of(r)[1] + 5)
         end = Point(i.target_of(r)[0] + 5, i.target_of(r)[1] + 5)
-
         # Create robot object
         robotObj = Robot(start,end,robot_number)
-
         # Add robot to robot_list
         addRobotToList(robotObj)
         addRobotToListNot_dest(robotObj)
-
+                                # robot_list.append(robotObj)
         # Place the robot on the board
         board[robotObj.current_place.x][robotObj.current_place.y] = robotObj.robot_number
         # Update the counter of robots

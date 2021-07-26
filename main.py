@@ -75,8 +75,6 @@ def start_game(board):
 def start_game2(board):
     n = len(board)
     number_of_steps = 0
-
-    # create board with the final place of the robots
     robot_final_place = [[0 for i in range(n)] for j in range(n)]
     for r in robot_list:
         robot_final_place[r.end_place.x][r.end_place.y] = r.robot_number
@@ -88,7 +86,6 @@ def start_game2(board):
         boardgame2.robot1[r.end_place.x][r.end_place.y] = r.robot_number
     boardgame1.cratetable(boardgame2)
 
-    # The number of rows that the robots will be in a frame
     number_of_robot = len(robot_list)
     blank_spcae = 0
     count = number_of_robot
@@ -99,7 +96,6 @@ def start_game2(board):
         blank_spcae += 1
     print("number of blank: " ,blank_spcae)
 
-    # Moves the robots to the board frame
     num = frames(board, boardgame2,blank_spcae)
     number_of_steps +=num
 
@@ -189,24 +185,16 @@ def start_game2(board):
             i -= 1
         low_column -= 1
 
-    not_good = 0
-    for i in range(n):
-        for j in range(n):
-            if robot_final_place[i][j] > 0:
-                if robot_final_place[i][j] != board[i][j]:
-                    not_good +=1
-                    print("place not good", i, " ", j ," ",robot_final_place[i][j])
-    print("number of not good: ", not_good)
-
-    print(
-        "   0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29")
-    for i in range(len(board)):
-        print(i, board[i])
-
+    for r in robot_list:
+        if not Point.equal(r.current_place, r.end_place):
+            print("r.current_place: ", r.current_place)
+            print("r.end_place: ", r.end_place)
+            print("robot number ", r.robot_number)
+            print("not good!!")
 
     print("number_of_steps: ",number_of_steps)
 
-    time.sleep(2)
+    time.sleep(10)
 
 
 def add_steps(n, number_of_steps):

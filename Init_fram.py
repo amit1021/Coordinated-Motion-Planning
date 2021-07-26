@@ -145,6 +145,10 @@ def move_robots_up(board, robot,boardgame2,  blank_spcae):
                 num = move_robot(board, r, robot_queue_node, boardgame2)
                 number_of_steps += num
                 counter -= 1
+            else:
+                print("========================================================== -1  (move_robots_up 2) BFS")
+                counter -= 1
+
 
         # move robot to final place
         move_robot_to_final_place(board, robot, boardgame2)

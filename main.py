@@ -80,12 +80,16 @@ def start_game(board):
     for r in robot_list:
         robot_final_place[r.end_place.x][r.end_place.y] = r.robot_number
 
-    # GUI
-    boardgame2 = boardgame1(30)
-    # for r in robot_list:
-    #     boardgame2.robot[r.current_place.x][r.current_place.y] = r.robot_number
-    #     boardgame2.robot1[r.end_place.x][r.end_place.y] = r.robot_number
-    # boardgame1.cratetable(boardgame2)
+    # The next lines for the gui
+    boardgame2 = boardgame1(len(board))
+    for r in robot_list:
+        boardgame2.robot[r.current_place.x][r.current_place.y] = r.robot_number
+        boardgame2.robot1[r.end_place.x][r.end_place.y] = r.robot_number
+        for i in range(len(board)):
+            for j in range(len(board[i])):
+                if board[i][j] == -1:
+                    boardgame2.robot1[i][j] = -1
+    boardgame1.cratetable(boardgame2)
 
     # The number of rows that the robots will be in a frame
     number_of_robot = len(robot_list)

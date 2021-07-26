@@ -16,7 +16,7 @@ def init_game():
         print("Instance:", i)
         print(y + 1)
         y = y + 1
-        if y == 29:
+        if y == 1:
             break
 
     # get the board dimensions

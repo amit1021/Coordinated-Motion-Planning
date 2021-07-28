@@ -1,7 +1,8 @@
-from BFS import bfs, is_valid
+from BFS import bfs, is_valid, bfs_few_steps
 from Move_Robot import move_robot, move_robot_to_dest
 from Point import Point
 from RobotPoint import RobotPoint
+from get_robot_stack import stack_robot
 from params import robot_list, FindRobotByNumber, getRobotListSize
 
 
@@ -100,7 +101,7 @@ def get_robot_out(board, robot,boardgame2, blank_spcae):
         move_robots_left(board, robot, boardgame2, blank_spcae)
 
 
-def move_robots_up(board, robot,boardgame2,  blank_spcae):
+def move_robots_up(board, robot,boardgame2,  blank_space):
     number_of_steps = 0
     robot_old_place = []
     p = robot.current_place
@@ -151,7 +152,7 @@ def move_robots_up(board, robot,boardgame2,  blank_spcae):
 
 
         # move robot to final place
-        move_robot_to_final_place(board, robot, boardgame2)
+        move_robot_to_final_place(board, robot, blank_space,"UP", boardgame2)
 
         # reverse the robots -> return robots
         move_robots_back(board, robot_old_place, boardgame2)
@@ -191,7 +192,7 @@ def move_robots_up(board, robot,boardgame2,  blank_spcae):
 
 
         # move robot to final place
-        num = move_robot_to_final_place(board, robot, boardgame2)
+        num = move_robot_to_final_place(board, robot,  blank_space,"UP",boardgame2)
         number_of_steps += num
 
         # reverse the robots -> return robots
@@ -201,7 +202,7 @@ def move_robots_up(board, robot,boardgame2,  blank_spcae):
     return number_of_steps
 
 
-def move_robots_down(board, robot, boardgame2, blank_spcae):
+def move_robots_down(board, robot, boardgame2, blank_space):
     number_of_steps = 0
     robot_old_place = []
     p = robot.current_place
@@ -253,7 +254,7 @@ def move_robots_down(board, robot, boardgame2, blank_spcae):
                 counter -= 1
 
         # move robot to final place
-        num = move_robot_to_final_place(board, robot, boardgame2)
+        num = move_robot_to_final_place(board, robot, blank_space,"DOWN", boardgame2)
         number_of_steps += num
 
         # reverse the robots -> return robots
@@ -297,7 +298,7 @@ def move_robots_down(board, robot, boardgame2, blank_spcae):
                 counter -= 1
 
         # move robot to final place
-        num = move_robot_to_final_place(board, robot, boardgame2)
+        num = move_robot_to_final_place(board, robot, blank_space,"DOWN", boardgame2)
         number_of_steps += num
 
         # reverse the robots -> return robots
@@ -305,7 +306,7 @@ def move_robots_down(board, robot, boardgame2, blank_spcae):
         number_of_steps += num
 
 
-def move_robots_left(board, robot,boardgame2,  blank_space):
+def move_robots_left(board, robot,boardgame2, blank_space):
     number_of_steps = 0
     robot_old_place = []
     p = robot.current_place
@@ -356,7 +357,7 @@ def move_robots_left(board, robot,boardgame2,  blank_space):
                 counter -= 1
 
         # move robot to final place
-        num = move_robot_to_final_place(board, robot, boardgame2)
+        num = move_robot_to_final_place(board, robot, blank_space,"LEFT", boardgame2)
         number_of_steps += num
 
         # reverse the robots -> return robots
@@ -402,14 +403,14 @@ def move_robots_left(board, robot,boardgame2,  blank_space):
 
 
         # move robot to final place
-        num = move_robot_to_final_place(board, robot, boardgame2)
+        num = move_robot_to_final_place(board, robot,  blank_space,"LEFT",boardgame2)
         number_of_steps += num
 
         # reverse the robots -> return robots
         num = move_robots_back(board, robot_old_place, boardgame2)
         number_of_steps += num
 
-def move_robots_right(board, robot, boardgame2, blank_spcae):
+def move_robots_right(board, robot, boardgame2, blank_space):
     number_of_steps = 0
     robot_old_place = []
     p = robot.current_place
@@ -460,7 +461,7 @@ def move_robots_right(board, robot, boardgame2, blank_spcae):
                 counter -= 1
 
         # move robot to final place
-        num = move_robot_to_final_place(board, robot, boardgame2)
+        num = move_robot_to_final_place(board, robot, blank_space,"RIGHT", boardgame2)
         number_of_steps += num
 
         # reverse the robots -> return robots
@@ -503,7 +504,7 @@ def move_robots_right(board, robot, boardgame2, blank_spcae):
 
 
         # move robot to final place
-        num = move_robot_to_final_place(board, robot, boardgame2)
+        num = move_robot_to_final_place(board, robot, blank_space, "RIGHT", boardgame2)
         number_of_steps += num
 
         # reverse the robots -> return robots
@@ -511,7 +512,7 @@ def move_robots_right(board, robot, boardgame2, blank_spcae):
         number_of_steps += num
 
 
-def move_robot_to_final_place(board, robot , boardgame2):
+def move_robot_to_final_place(board, robot ,blank_space,direc, boardgame2):
     number_of_steps = 0
     # move robot to final place
     robot_queue_node = bfs(board, robot.current_place, robot.end_place)
@@ -519,6 +520,18 @@ def move_robot_to_final_place(board, robot , boardgame2):
         num = move_robot_to_dest(board, robot, robot_queue_node , boardgame2)
         number_of_steps +=num
         return number_of_steps
+    else:
+        if direc == "LEFT":
+            dest = Point( robot.current_place.x,robot.current_place.y + blank_space + 1)
+            robot_queue_node = bfs(board, robot.current_place, dest)
+            if robot_queue_node != -1:
+                num = move_robot(board, robot, robot_queue_node , boardgame2)
+
+        robot_queue_node = bfs_few_steps(board, robot.current_place, robot.end_place)
+        stack_robot(robot, board, robot_queue_node, boardgame2)
+        robot_queue_node = bfs(board, robot.current_place, dest)
+        if robot_queue_node != -1:
+            num = move_robot_to_dest(board, robot, robot_queue_node, boardgame2)
     return number_of_steps
 
 

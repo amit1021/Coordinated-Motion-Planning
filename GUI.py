@@ -93,7 +93,7 @@ class boardgame1():
                     win.blit(text, textRect)
 
         # The display screen , size 900x900
-        screen = pygame.display.set_mode((750, 750))
+        screen = pygame.display.set_mode((900, 900))
 
         # Time for while
         timeout = time.time() + 0.01

@@ -11,12 +11,12 @@ def init_game():
     # y = 0 that we can choose a board
     y = 0
     # take the board instance
-    idb = InstanceDatabase("C:/Users/amite/Desktop/שנה ג/פרויקט/cgshop_2021_instances_01.zip")
+    idb = InstanceDatabase("C:/Users/amit.elbaz/Desktop/Amit/cgshop_2021_instances_01.zip")
     for i in idb:
         print("Instance:", i)
         print(y + 1)
         y = y + 1
-        if y == 57:
+        if y == 102:
             break
 
     # get the board dimensions

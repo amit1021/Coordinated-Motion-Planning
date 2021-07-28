@@ -5,6 +5,7 @@ from Move_Robot import move_robot, move_robot_to_dest
 from Point import Point
 import time
 from BFS import bfs, bfs_few_steps
+from get_robot_stack import stack_robot
 from initTheGame import init_game
 
 from params import getRobotListDestSize, getRobotToListNot_destSize, getRobotToListNot_dest, robot_list, FindRobotByNumber
@@ -198,8 +199,13 @@ def start_game(board):
             if robot_final_place[i][j] > 0:
                 if robot_final_place[i][j] != board[i][j]:
                     if board[i][j] != -1:
-                        not_good +=1
-                        print("place not good", i, " ", j ," ",robot_final_place[i][j])
+                        robot = FindRobotByNumber(robot_final_place[i][j])
+                        robot_queue_node = bfs_few_steps(board, robot.current_place, robot.end_place)
+                        if robot_queue_node != -1:
+                            stack_robot(robot, board, robot_queue_node, blank_spcae, boardgame2)
+                        if robot_final_place[i][j] != board[i][j]:
+                            not_good += 1
+                            print("place not good", i, " ", j ," ",robot_final_place[i][j])
     print("number of not good: ", not_good)
 
     print(

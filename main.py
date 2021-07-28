@@ -197,15 +197,18 @@ def start_game(board):
     for i in range(n):
         for j in range(n):
             if robot_final_place[i][j] > 0:
-                if robot_final_place[i][j] != board[i][j]:
-                    if board[i][j] != -1:
-                        robot = FindRobotByNumber(robot_final_place[i][j])
+                if robot_final_place[i][j] != board[i][j] and board[i][j] != -1:
+                    robot = FindRobotByNumber(robot_final_place[i][j])
+                    if robot !=0:
                         robot_queue_node = bfs_few_steps(board, robot.current_place, robot.end_place)
                         if robot_queue_node != -1:
                             stack_robot(robot, board, robot_queue_node, blank_spcae, boardgame2)
-                        if robot_final_place[i][j] != board[i][j]:
-                            not_good += 1
-                            print("place not good", i, " ", j ," ",robot_final_place[i][j])
+    for k in range(n):
+        for z in range(n):
+            if robot_final_place[k][z] > 0 and robot_final_place[k][z] != board[k][z] and board[k][z] != -1:
+                not_good += 1
+                print("place not good", k, " ", z ," ",robot_final_place[k][z])
+
     print("number of not good: ", not_good)
 
     print(

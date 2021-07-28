@@ -16,7 +16,7 @@ def init_game():
         print("Instance:", i)
         print(y + 1)
         y = y + 1
-        if y == 6:
+        if y == 3:
             break
 
     # get the board dimensions

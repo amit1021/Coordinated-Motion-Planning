@@ -53,6 +53,7 @@ def robot_back(board, robot_old_place, boardgame2):
 def stack_robot(robot, board, robot_queue_node, blank_space, boardgame2):
     robot_to_move = []
     robot_back = []
+    number_of_steps = 0
     for p in robot_queue_node.path:
         if board[p.x][p.y] != 0:
             r = FindRobotByNumber(board[p.x][p.y])
@@ -70,7 +71,7 @@ def stack_robot(robot, board, robot_queue_node, blank_space, boardgame2):
             if robot_queue_node_r != -1:
                 robot_point = RobotPoint(r, dest)
                 robot_back.append(robot_point)
-                move_robot(board, r, robot_queue_node_r, boardgame2)
+                number_of_steps += move_robot(board, r, robot_queue_node_r, boardgame2)
                 number_of_robots -= 1
     if dir == "DOWN":
         x = len(board) - blank_space - 1
@@ -84,7 +85,7 @@ def stack_robot(robot, board, robot_queue_node, blank_space, boardgame2):
             if robot_queue_node_r != -1:
                 robot_point = RobotPoint(r, dest)
                 robot_back.append(robot_point)
-                move_robot(board, r, robot_queue_node_r, boardgame2)
+                number_of_steps += move_robot(board, r, robot_queue_node_r, boardgame2)
                 number_of_robots -= 1
     if dir == "LEFT":
         x = robot.current_place.x
@@ -98,7 +99,7 @@ def stack_robot(robot, board, robot_queue_node, blank_space, boardgame2):
             if robot_queue_node_r != -1:
                 robot_point = RobotPoint(r, dest)
                 robot_back.append(robot_point)
-                move_robot(board, r, robot_queue_node_r, boardgame2)
+                number_of_steps += move_robot(board, r, robot_queue_node_r, boardgame2)
                 number_of_robots -= 1
     if dir == "RIGHT":
         x = robot.current_place.x
@@ -112,12 +113,13 @@ def stack_robot(robot, board, robot_queue_node, blank_space, boardgame2):
             if robot_queue_node_r != -1:
                 robot_point = RobotPoint(r, dest)
                 robot_back.append(robot_point)
-                move_robot(board, r, robot_queue_node_r, boardgame2)
+                number_of_steps += move_robot(board, r, robot_queue_node_r, boardgame2)
                 number_of_robots -= 1
     robot_queue_node = bfs(board, robot.current_place, robot.end_place)
     if robot_queue_node != -1:
-        move_robot(board,robot, robot_queue_node,boardgame2)
-    move_robots_back(board, robot_back,boardgame2 )
+        number_of_steps += move_robot(board,robot, robot_queue_node, boardgame2)
+    number_of_steps += move_robots_back(board, robot_back, boardgame2)
+    return number_of_steps
 
 
 def move_robots_back(board, robot_old_place , boardgame2):

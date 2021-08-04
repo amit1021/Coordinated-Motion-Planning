@@ -491,7 +491,7 @@ def move_robot_to_final_place(board, robot ,blank_space,direc, boardgame2):
             number_of_steps += move_robot(board, robot, robot_queue_node , boardgame2)
 
         robot_queue_node = bfs_few_steps(board, robot.current_place, robot.end_place)
-        stack_robot(robot, board, robot_queue_node,blank_space, boardgame2)
+        number_of_steps += stack_robot(robot, board, robot_queue_node,blank_space, boardgame2)
         # robot_queue_node = bfs(board, robot.current_place, dest)
         # if robot_queue_node != -1:
         #     number_of_steps += move_robot_to_dest(board, robot, robot_queue_node, boardgame2)

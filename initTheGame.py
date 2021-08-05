@@ -16,7 +16,7 @@ def init_game():
         print("Instance:", i)
         print(y + 1)
         y = y + 1
-        if y == 2:
+        if y == 10:
             break
 
     # get the board dimensions
@@ -24,24 +24,16 @@ def init_game():
     l = json.loads(k)
     # The board is n X n
     n = (l['parameters']['shape'][0])
+    length_board = n
 
     i: Instance #just to enable typing
 
-    # Finds how many lines to add to the board
-    blank_spcae = 0
-    count = i.number_of_robots
-    q = 0
-    while count > 0:
-        count -= (n - q) * 4
-        q += 2
-        blank_spcae += 1
-    print("number of blank: ", blank_spcae)
+    q = blank_space(i.number_of_robots, n)
+    n = (l['parameters']['shape'][0]) + (2 * q)
 
-    # board length with expansion
-    x = 2 * (3 + blank_spcae)
-    n = (l['parameters']['shape'][0]) + x
-    #
-    q = 3 + blank_spcae
+    # create board with the final place of the robots
+    robot_final_place = [[0 for i in range(n)] for j in range(n)]
+
     # create a board
     board = [[0 for i in range(n)] for j in range(n)]
 
@@ -55,8 +47,8 @@ def init_game():
         # start = Point(i.start_of(r)[0] + q , i.start_of(r)[1] + q)
         # end = Point(i.target_of(r)[0] + q, i.target_of(r)[1] + q)
 
-        start = Point(i.start_of(r)[0] + 3 + blank_spcae, i.start_of(r)[1] + 3 + blank_spcae)
-        end = Point(i.target_of(r)[0] + 3 + blank_spcae, i.target_of(r)[1] + 3 + blank_spcae)
+        start = Point(i.start_of(r)[0] + q, i.start_of(r)[1] + q)
+        end = Point(i.target_of(r)[0] + q, i.target_of(r)[1] + q)
 
         # Create robot object
         robotObj = Robot(start,end,robot_number)
@@ -67,6 +59,9 @@ def init_game():
 
         # Place the robot on the board
         board[robotObj.current_place.x][robotObj.current_place.y] = robotObj.robot_number
+        # Place the robot on the robot_final_place
+        robot_final_place[end.x][end.y] = robotObj.robot_number
+
         # Update the counter of robots
         robot_number = robot_number + 1
 
@@ -77,5 +72,24 @@ def init_game():
         x = o[0] + q
         y = o[1] + q
         board[x][y] = -1
+        robot_final_place[x][y] = -1
 
-    return board
+    return board, length_board, robot_final_place
+
+
+def blank_space(number_of_robots, n):
+    # Finds how many lines to add to the board
+    blank_spcae = 0
+    count = number_of_robots
+    q = 0
+    while count > 0:
+        count -= (n - q) * 4
+        q += 2
+        blank_spcae += 1
+    print("number of blank: ", blank_spcae)
+
+    # board length with expansion
+    x = blank_spcae + 2
+    # if n > 99 and number_of_robots >= 2500:
+    #     x = blank_spcae + 4
+    return x

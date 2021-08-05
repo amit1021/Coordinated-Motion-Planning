@@ -1,8 +1,5 @@
 from BFS import bfs, bfs_few_steps
-from Point import Point
 
-from params import addRobotToDest, removeRobotToListNot_dest, FindRobotByNumber, addRobotToListNot_dest, \
-    removeRobotToDest
 
 
 def move_robot(board, robot, robot_queue_node, boardgame1 ):
@@ -58,3 +55,15 @@ def move_robot_one_step(dest, board, robot, boardgame1):
     # boardgame1.robot[robot.current_place.x][robot.current_place.y] = robot.robot_number
     # boardgame1.cratetable()
     return
+
+
+
+def move_robots_back(board, robot_old_place , boardgame2):
+    number_of_steps = 0
+    # reverse the robots -> return robots
+    for r in reversed(robot_old_place):
+        robot_queue_node = bfs(board, r.robot.current_place, r.dest)
+        if robot_queue_node != -1:
+            num = move_robot(board, r.robot, robot_queue_node, boardgame2)
+            number_of_steps += num
+    return number_of_steps

@@ -52,7 +52,6 @@ def move_robot_few_steps(board,robot, robot_queue_node, boardgame1, number_of_st
 
             # Add step
             number_of_steps = number_of_steps + 1
-            print("steps" ,number_of_steps)
             # When the robot reach is destination
             if Point.equal(robot.current_place, robot.end_place):
                 # Remove from robot list

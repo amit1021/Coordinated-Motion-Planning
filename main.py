@@ -92,8 +92,8 @@ def start_game(board, board_length, robot_final_place):
     number_of_robot = len(robot_list)
     blank_spcae = 0
     count = number_of_robot
-    q = 0
-    while count > 0:
+    q = 1
+    while count >= 0:
         count -= (len(board) - q) * 4
         q += 2
         blank_spcae += 1

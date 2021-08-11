@@ -73,7 +73,7 @@ from params import getRobotListDestSize, getRobotToListNot_destSize, getRobotToL
 
 
 
-def start_game(board, board_length, robot_final_place):
+def start_game(board, board_length, robot_final_place, blank_space_init):
     n = len(board)
     number_of_steps = 0
 
@@ -90,16 +90,15 @@ def start_game(board, board_length, robot_final_place):
 
     # The number of rows that the robots will be in a frame
     number_of_robot = len(robot_list)
-    blank_spcae = 0
+    blank_space = 0
     count = number_of_robot
-    q = 1
+    blank_space_init -= 2
     while count >= 0:
-        count -= (len(board) - q) * 4
-        q += 2
-        blank_spcae += 1
-    print("number of blank: " ,blank_spcae)
+        count -= (len(board) - blank_space_init) * 4
+        blank_space += 1
+    print("number of blank: " ,blank_space)
 
-    num = frames__(board,blank_spcae, board_length, boardgame2)
+    num = frames__(board,blank_space, board_length, boardgame2)
     number_of_steps +=num
 
     a = int(n/2)
@@ -122,7 +121,7 @@ def start_game(board, board_length, robot_final_place):
                         num = move_robot_to_dest(board, robot, robot_queue_node, boardgame2)
                         number_of_steps += num
                     else:
-                        get_robot_out(board, robot, boardgame2, blank_spcae)
+                        get_robot_out(board, robot, boardgame2, blank_space)
                 else:
                     print("robot equal -1")
 
@@ -140,7 +139,7 @@ def start_game(board, board_length, robot_final_place):
                         num = move_robot_to_dest(board, robot, robot_queue_node, boardgame2)
                         number_of_steps += num
                     else:
-                        get_robot_out(board, robot, boardgame2, blank_spcae)
+                        get_robot_out(board, robot, boardgame2, blank_space)
                 else:
                     print("robot equal -1")
 
@@ -158,7 +157,7 @@ def start_game(board, board_length, robot_final_place):
                        num = move_robot_to_dest(board, robot, robot_queue_node,boardgame2)
                        number_of_steps += num
                     else:
-                        get_robot_out(board, robot, boardgame2, blank_spcae)
+                        get_robot_out(board, robot, boardgame2, blank_space)
                 else:
                     print("robot equal -1")
 
@@ -176,7 +175,7 @@ def start_game(board, board_length, robot_final_place):
                         num = move_robot_to_dest(board, robot, robot_queue_node, boardgame2)
                         number_of_steps += num
                     else:
-                        get_robot_out(board, robot, boardgame2, blank_spcae)
+                        get_robot_out(board, robot, boardgame2, blank_space)
                 else:
                     print("robot equal -1")
             i -= 1
@@ -190,7 +189,7 @@ def start_game(board, board_length, robot_final_place):
                     if robot !=0:
                         robot_queue_node = bfs_few_steps(board, robot.current_place, robot.end_place)
                         if robot_queue_node != -1:
-                            number_of_steps += stack_robot(robot, board, robot_queue_node, blank_spcae, boardgame2)
+                            number_of_steps += stack_robot(robot, board, robot_queue_node, blank_space, boardgame2)
     for k in range(n):
         for z in range(n):
             if robot_final_place[k][z] != board[k][z] and robot_final_place[k][z] > 0 :
@@ -217,9 +216,9 @@ def add_steps(n, number_of_steps):
     return number_of_steps
 
 def main():
-    board, board_length, robot_final_place = init_game()
+    board, board_length, robot_final_place , blank_space_init = init_game()
     # start_game(board)
-    start_game(board, board_length, robot_final_place)
+    start_game(board, board_length, robot_final_place, blank_space_init)
 
 
 if __name__ == '__main__':

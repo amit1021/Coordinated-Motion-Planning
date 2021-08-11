@@ -16,7 +16,7 @@ def init_game():
         print("Instance:", i)
         print(y + 1)
         y = y + 1
-        if y == 23:
+        if y == 46:
             break
 
     # get the board dimensions
@@ -74,7 +74,7 @@ def init_game():
         board[x][y] = -1
         robot_final_place[x][y] = -1
 
-    return board, length_board, robot_final_place
+    return board, length_board, robot_final_place, q
 
 
 def blank_space(number_of_robots, n):

@@ -5,6 +5,8 @@ from params import FindRobotByNumber
 
 
 def frames(board, blank_space, boardgame2):
+    if len(board) > 30:
+        blank_space += 1
     # if we moved one robot - break from the for
     flag = False
     number_of_steps = 0

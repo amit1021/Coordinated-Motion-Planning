@@ -2,13 +2,11 @@ import pygame
 import time
 
 
-
 # The object that create GUI is boardgame1
-class boardgame1():
-
+class Gui():
     def __init__(self, height):
-        self.robot = [[0] * height for i in range(height)]     # Place of the robot
-        self.robot1 = [[0] * height for i in range(height)]    # Destination of robot
+        self.src = [[0] * height for i in range(height)]     # Place of the robot
+        self.dest = [[0] * height for i in range(height)]    # Destination of robot
         self.height = height           # Size of bord
         self.bgx = 0                   # bgx, bgy - for big boards
         self.bgy = 0
@@ -51,41 +49,41 @@ class boardgame1():
         dis_to_cen = WIDTH // ROWS // 2
 
         #  Move across the board and draw the objects
-        for i in range(len(self.robot)):
-            for j in range(len(self.robot)):
+        for i in range(len(self.src)):
+            for j in range(len(self.src)):
                 x = dis_to_cen * (2 * j + 1)
                 y = dis_to_cen * (2 * i + 1)
 
-                if (self.robot[i][j] != 0):
+                if (self.src[i][j] != 0):
 
                     # Draw the the robots that have not yet reached their destination
-                    if self.robot[i][j] != self.robot1[i][j]:
+                    if self.src[i][j] != self.dest[i][j]:
                         pygame.draw.circle(win, (255, 0, 0), (x, y+4), 10)
                         font = pygame.font.Font('freesansbold.ttf', 10)
-                        text = font.render(str(self.robot[i][j]), True, (255, 255, 51))
+                        text = font.render(str(self.src[i][j]), True, (255, 255, 51))
                         textRect = text.get_rect()
                         textRect.center = (x, y+4)
                         win.blit(text, textRect)
 
                     # Draw the the robots that reached their destination
-                    if self.robot[i][j] == self.robot1[i][j]:
+                    if self.src[i][j] == self.dest[i][j]:
                        pygame.draw.circle(win, (0, 0, 128), (x, y+4), 10)
                        font = pygame.font.Font('freesansbold.ttf', 10)
-                       text = font.render(str(self.robot[i][j]), True, (255, 255, 51))
+                       text = font.render(str(self.src[i][j]), True, (255, 255, 51))
                        textRect = text.get_rect()
                        textRect.center = (x, y+4)
                        win.blit(text, textRect)
 
                 # Draw destination of any robot
-                if (self.robot1[i][j] != 0 and self.robot1[i][j] != -1):
+                if (self.dest[i][j] != 0 and self.dest[i][j] != -1):
                     font = pygame.font.Font('freesansbold.ttf', 10)
-                    text = font.render(str(self.robot1[i][j]), True, (51, 0, 0))
+                    text = font.render(str(self.dest[i][j]), True, (51, 0, 0))
                     textRect = text.get_rect()
                     textRect.center = (x - 5, y - 9)
                     win.blit(text, textRect)
 
                 # Draw obstacles
-                if (self.robot1[i][j] == -1 ):
+                if (self.dest[i][j] == -1 ):
                     font = pygame.font.Font('freesansbold.ttf', 25)
                     text = font.render(str("x"), True, (0, 0, 0))
                     textRect = text.get_rect()

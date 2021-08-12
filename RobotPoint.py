@@ -3,9 +3,6 @@ from Robot import Robot
 
 
 class RobotPoint:
-      def __init__(self, robot: Robot, dest:Point):
-        self.dest = dest
+    def __init__(self, robot: Robot, prev: Point):
+        self.prev = prev
         self.robot = robot
-
-
-

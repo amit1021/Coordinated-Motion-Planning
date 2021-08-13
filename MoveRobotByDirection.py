@@ -40,12 +40,19 @@ def move_robots_up(eb, robot):
     number_of_steps = 0
     robot_prev_place = []
     p = robot.current_place
-    counter = -1
+    # counter = -1
     x = p.x
+    lines_space = eb.row_space - x - 1
+    counter = 0
 
-    while eb.board[x][p.y] != 0 or eb.board[x][p.y] == 0 and eb.board[x + 1][p.y] != 0:
+    # while eb.board[x][p.y] != 0 or eb.board[x][p.y] == 0 and eb.board[x + 1][p.y] != 0:
+    #     counter += 1
+    #     x += 1
+    while lines_space > 0:
         counter += 1
+        lines_space -= 1
         x += 1
+
     number_steps_out = counter
     if p.y < eb.n / 2:
         while counter > 0:
@@ -128,12 +135,18 @@ def move_robots_down(eb, robot):
     number_of_steps = 0
     robot_old_place = []
     p = robot.current_place
-    counter = -1
+    # counter = -1
     x = p.x
 
-    while (eb.board[x][p.y] != 0) or (eb.board[x][p.y] == 0 and eb.board[x - 1][p.y] != 0):
+    lines_space = eb.row_space - (eb.n - x)
+    counter = 0
+    while lines_space > 0:
         counter += 1
-        x -= 1
+        lines_space -= 1
+        x += 1
+    # while (eb.board[x][p.y] != 0) or (eb.board[x][p.y] == 0 and eb.board[x - 1][p.y] != 0):
+    #     counter += 1
+    #     x -= 1
     number_steps_out = counter
     if p.y < eb.n / 2:
         while counter > 0:
@@ -219,12 +232,20 @@ def move_robots_left(eb, robot):
     number_of_steps = 0
     robot_old_place = []
     p = robot.current_place
-    counter = -1
+    # counter = -1
     y = p.y
 
-    while (eb.board[p.x][y] != 0) or (eb.board[p.x][y] == 0 and eb.board[p.x][y + 1] != 0):
+    lines_space = eb.row_space - y - 1
+    counter = 0
+
+    while lines_space > 0:
         counter += 1
+        lines_space -= 1
         y += 1
+
+    # while (eb.board[p.x][y] != 0) or (eb.board[p.x][y] == 0 and eb.board[p.x][y + 1] != 0):
+    #     counter += 1
+    #     y += 1
     number_steps_out = counter
     if p.x < eb.n / 2:
         while counter > 0:
@@ -306,15 +327,21 @@ def move_robots_right(eb, robot):
     number_of_steps = 0
     robot_old_place = []
     p = robot.current_place
-    counter = -1
+    # counter = -1
     y = p.y
+    lines_space = eb.row_space - (eb.n - y)
+    counter = 0
 
-    while (eb.board[p.x][y] != 0) or (eb.board[p.x][y] == 0 and eb.board[p.x][y - 1] != 0):
+    while lines_space > 0:
         counter += 1
-        y -= 1
+        lines_space -= 1
+        y += 1
+    # while (eb.board[p.x][y] != 0) or (eb.board[p.x][y] == 0 and eb.board[p.x][y - 1] != 0):
+    #     counter += 1
+    #     y -= 1
     number_steps_out = counter
     if p.x < eb.n / 2:
-        while counter > 0:
+        while lines_space > 0:
             r = find_robot_by_number(eb.board[p.x][p.y - counter])
             if r.robot_number == 0:
                 counter -= 1

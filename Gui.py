@@ -2,13 +2,14 @@ import pygame
 import time
 
 
-# The object that create GUI is boardgame1
+# The object that create GUI:
 class Gui():
     def __init__(self, height):
         self.src = [[0] * height for i in range(height)]     # Place of the robot
         self.dest = [[0] * height for i in range(height)]    # Destination of robot
-        self.height = height           # Size of bord
-        self.bgx = 0                   # bgx, bgy - for big boards
+        self.height = height           # Size of board
+        print(height)
+        self.bgx = 90                  # bgx, bgy - for big boards
         self.bgy = 0
 
     # The function that creates the gui screen
@@ -19,8 +20,8 @@ class Gui():
         pygame.init()               # Basic pygame
 
         ROWS = self.height          # Size of the board
-        WIDTH = self.height*30      # The size of the Surface, depends on the size of the board
-
+        WIDTH = self.height*30     # The size of the Surface, depends on the size of the board
+        print(WIDTH)
         # Create Surface
         win = pygame.Surface((WIDTH, WIDTH))
 
@@ -90,8 +91,8 @@ class Gui():
                     textRect.center = (x, y)
                     win.blit(text, textRect)
 
-        # The display screen , size 900x900
-        screen = pygame.display.set_mode((1100, 1100))
+        # The display screen , size 1050x1050
+        screen = pygame.display.set_mode((1050, 1050))
 
         # Time for while
         timeout = time.time() + 0.01
@@ -107,11 +108,10 @@ class Gui():
 
             # The part that the screen will show in the win
             # win is a screen, define in line 23
-            screen.blit(win, (self.bgy, self.bgx - self.height*30))
+            screen.blit(win, (self.bgy, self.bgx - self.height * 30))
             screen.blit(win, (self.bgy, self.bgx))
-            screen.blit(win, (self.bgy, self.bgx + self.height*30))
+            screen.blit(win, (self.bgy, self.bgx + self.height * 30))
             pygame.display.update()
-
             # Event for the keyboard
             for event in pygame.event.get():
 
@@ -123,13 +123,19 @@ class Gui():
                 if event.type == pygame.KEYUP:
 
                     if event.key == pygame.K_UP:
-                        self.bgx = self.bgx + 3 * self.height
+                        if (self.bgx < 90):
+                            self.bgx = self.bgx + 1.3 * self.height
 
                     elif event.key == pygame.K_LEFT:
+
                         self.bgy = self.bgy + 3 * self.height
 
                     elif event.key == pygame.K_DOWN:
-                        self.bgx = self.bgx - 3 * self.height
+                        if(self.height == 30):
+                            if (self.bgx > 12):
+                                self.bgx = self.bgx - 1.3 * self.height
+                        else:
+                            self.bgx = self.bgx - 1.3 * self.height
 
                     elif event.key == pygame.K_RIGHT:
                         self.bgy = self.bgy - 3 * self.height

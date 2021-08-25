@@ -14,7 +14,7 @@ class Gui():
     # The function that creates the gui screen
     # In this function we use "pygame"
 
-    def craFtetable(self):
+    def cratetable(self):
 
         pygame.init()               # Basic pygame
 
@@ -90,10 +90,10 @@ class Gui():
                     win.blit(text, textRect)
 
         # The display screen , size 1050x1050
-        screen = pygame.display.set_mode((1050, 1050))
+        screen = pygame.display.set_mode((1050, 1080))
 
         # Time for while
-        timeout = time.time() + 0.01
+        timeout = time.time()
 
         # For the keyboard commands
         # Listens to commands

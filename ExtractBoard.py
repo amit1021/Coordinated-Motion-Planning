@@ -41,7 +41,6 @@ class ExtractBoard:
         self.number_of_robots = i.number_of_robots
         # increasing board by the algorithm
         self.row_space = row_space(self.number_of_robots, self.n_original)
-        print(self.row_space)
         self.n = (board_params['parameters']['shape'][0]) + (2 * self.row_space)
 
         i: Instance  # just to enable typing

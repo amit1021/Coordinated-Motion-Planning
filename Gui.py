@@ -29,7 +29,7 @@ class Gui():
         pygame.display.set_caption("Coordinated-Motion-Planning")
 
         # Size of any row
-        gap = WIDTH // ROWS
+        gap = WIDTH / ROWS
         # Starting points
         x = 0
         y = 0
@@ -47,7 +47,7 @@ class Gui():
             pygame.draw.line(win, (0, 0, 0), (x, 0), (x, WIDTH), 2)
             pygame.draw.line(win, (0, 0, 0), (0, x), (WIDTH, x), 2)
 
-        dis_to_cen = WIDTH // ROWS // 2
+        dis_to_cen = WIDTH / ROWS / 2
 
         #  Move across the board and draw the objects
         for i in range(len(self.src)):
@@ -110,7 +110,7 @@ class Gui():
             # win is a screen, define in line 23
             screen.blit(win, (self.bgy, self.bgx - self.height * 30))
             screen.blit(win, (self.bgy, self.bgx))
-            screen.blit(win, (self.bgy, self.bgx + self.height * 30))
+
             pygame.display.update()
             # Event for the keyboard
             for event in pygame.event.get():
@@ -131,11 +131,12 @@ class Gui():
                         self.bgy = self.bgy + 3 * self.height
 
                     elif event.key == pygame.K_DOWN:
-                        if(self.height == 30):
-                            if (self.bgx > 12):
-                                self.bgx = self.bgx - 1.3 * self.height
-                        else:
-                            self.bgx = self.bgx - 1.3 * self.height
+                        #if(self.height == 30):
+                           # if (self.bgx > 12):
+
+                              #  self.bgx = self.bgx - 1.3 * self.height
+                       # else:
+                        self.bgx = self.bgx - 1.3 * self.height
 
                     elif event.key == pygame.K_RIGHT:
                         self.bgy = self.bgy - 3 * self.height

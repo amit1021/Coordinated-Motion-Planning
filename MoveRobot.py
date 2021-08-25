@@ -23,7 +23,6 @@ def move_robot(eb, robot, robot_queue_node):
         # add step
         number_of_steps += 1
     eb.board_ui.cratetable()
-    # print("robot moved : ", robot.robot_number)
     return number_of_steps
 
 

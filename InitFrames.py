@@ -104,7 +104,4 @@ def init_frames(eb):
                                 break
                 flag = False
 
-    # print("----------------------------number_of_steps after frame -----------------------------------------: ",
-    # number_of_steps)
-
     return number_of_steps

@@ -8,20 +8,18 @@ class Gui():
         self.src = [[0] * height for i in range(height)]     # Place of the robot
         self.dest = [[0] * height for i in range(height)]    # Destination of robot
         self.height = height           # Size of board
-        print(height)
-        self.bgx = 90                  # bgx, bgy - for big boards
+        self.bgx = 0                  # bgx, bgy - for big boards
         self.bgy = 0
 
     # The function that creates the gui screen
     # In this function we use "pygame"
 
-    def cratetable(self):
+    def craFtetable(self):
 
         pygame.init()               # Basic pygame
 
         ROWS = self.height          # Size of the board
         WIDTH = self.height*30     # The size of the Surface, depends on the size of the board
-        print(WIDTH)
         # Create Surface
         win = pygame.Surface((WIDTH, WIDTH))
 

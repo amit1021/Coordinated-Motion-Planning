@@ -24,15 +24,11 @@ def get_robot_out(eb, robot):
     direction = get_direction_frame(p, eb.n, eb.row_space)
     if direction == "UP":
         move_robots_up(eb, robot)
-        # print("UP")
     if direction == "RIGHT":
         move_robots_right(eb, robot)
-        # print("RIGHT")
     if direction == "DOWN":
         move_robots_down(eb, robot)
-        # print("DOWN")
     if direction == "LEFT":
-        # print("LEFT")
         move_robots_left(eb, robot)
 
 

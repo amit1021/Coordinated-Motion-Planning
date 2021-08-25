@@ -91,7 +91,7 @@ class Gui():
                     win.blit(text, textRect)
 
         # The display screen , size 900x900
-        screen = pygame.display.set_mode((1050, 1050))
+        screen = pygame.display.set_mode((1100, 1100))
 
         # Time for while
         timeout = time.time() + 0.01

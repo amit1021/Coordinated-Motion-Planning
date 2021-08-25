@@ -20,8 +20,6 @@ def insert_in_spiral(eb):
                i < c and low_row >= 0):
             if eb.board_final_state[low_row][i] >= 1:
                 robot = find_robot_by_number(eb.board_final_state[low_row][i])
-                if robot.robot_number == 0:
-                    print("---------------------------------------------------------------")
                 if robot != -1:
                     robot_queue_node = bfs(eb.board, robot.current_place, robot.end_place)
                     if robot_queue_node != -1:
@@ -36,8 +34,6 @@ def insert_in_spiral(eb):
                i < r and high_column < c):
             if eb.board_final_state[i][high_column] >= 1:
                 robot = find_robot_by_number(eb.board_final_state[i][high_column])
-                if robot.robot_number == 0:
-                    print("---------------------------------------------------------------")
                 if robot != -1:
                     robot_queue_node = bfs(eb.board, robot.current_place, robot.end_place)
                     if robot_queue_node != -1:
@@ -53,8 +49,6 @@ def insert_in_spiral(eb):
                i >= 0 and high_row < r):
             if eb.board_final_state[high_row][i] >= 1:
                 robot = find_robot_by_number(eb.board_final_state[high_row][i])
-                if robot.robot_number == 0:
-                    print("---------------------------------------------------------------")
                 if robot != -1:
                     robot_queue_node = bfs(eb.board, robot.current_place, robot.end_place)
                     if robot_queue_node != -1:
@@ -70,8 +64,6 @@ def insert_in_spiral(eb):
                i >= 0 and low_column >= 0):
             if eb.board_final_state[i][low_column] >= 1:
                 robot = find_robot_by_number(eb.board_final_state[i][low_column])
-                if robot.robot_number == 0:
-                    print("---------------------------------------------------------------")
                 if robot != -1:
                     robot_queue_node = bfs(eb.board, robot.current_place, robot.end_place)
                     if robot_queue_node != -1:

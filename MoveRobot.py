@@ -14,29 +14,29 @@ def move_robot(eb, robot, robot_queue_node):
     for p in robot_queue_node.path:
         # delete the robot from is old place in the board
         eb.board[robot.current_place.x][robot.current_place.y] = 0
-        # eb.board_ui.src[robot.current_place.x][robot.current_place.y] = 0
+        eb.board_ui.src[robot.current_place.x][robot.current_place.y] = 0
         # update the new point of the robot
         robot.current_place = p
         # update the board with the new point of the robot
         eb.board[robot.current_place.x][robot.current_place.y] = robot.robot_number
-        # eb.board_ui.src[robot.current_place.x][robot.current_place.y] = robot.robot_number
+        eb.board_ui.src[robot.current_place.x][robot.current_place.y] = robot.robot_number
         # add step
         number_of_steps += 1
-    # eb.board_ui.cratetable()
-    print("robot moved : ", robot.robot_number)
+    eb.board_ui.cratetable()
+    # print("robot moved : ", robot.robot_number)
     return number_of_steps
 
 
 def move_robot_one_step(eb, dest, robot):
     # delete the robot from is old place in the board
     eb.board[robot.current_place.x][robot.current_place.y] = 0
-    # eb.board_ui.src[robot.current_place.x][robot.current_place.y] = 0
+    eb.board_ui.src[robot.current_place.x][robot.current_place.y] = 0
     # update the new point of the robot
     robot.current_place = dest
     # update the board with the new point of the robot
     eb.board[robot.current_place.x][robot.current_place.y] = robot.robot_number
-    # eb.board_ui.src[robot.current_place.x][robot.current_place.y] = robot.robot_number
-    # eb.board_ui.cratetable()
+    eb.board_ui.src[robot.current_place.x][robot.current_place.y] = robot.robot_number
+    eb.board_ui.cratetable()
     return
 
 
@@ -47,8 +47,6 @@ def move_robots_back(eb, robot_prev_place):
         robot_queue_node = bfs(eb.board, r.robot.current_place, r.prev)
         if robot_queue_node != -1:
             number_of_steps += move_robot(eb, r.robot, robot_queue_node)
-        else:
-            print("========================================================== move_robots_back")
     return number_of_steps
 
 
@@ -60,8 +58,6 @@ def move_robots_back_test(eb, robot_prev_place):
         if robot_queue_node != -1:
             num = move_robot(eb, r.robot, robot_queue_node)
             number_of_steps += num
-        else:
-            print("========================================================== move_robots_back")
     return number_of_steps
 
 
@@ -150,8 +146,6 @@ def get_direction(p, n):
 
 
 def move_robot_to_final_place(eb, robot, direction):
-    if robot.robot_number == 0:
-        print("---------------------------------------------------------------")
     number_of_steps = 0
     # move robot to final place
     robot_queue_node = bfs(eb.board, robot.current_place, robot.end_place)

@@ -24,15 +24,15 @@ def get_robot_out(eb, robot):
     direction = get_direction_frame(p, eb.n, eb.row_space)
     if direction == "UP":
         move_robots_up(eb, robot)
-        print("UP")
+        # print("UP")
     if direction == "RIGHT":
         move_robots_right(eb, robot)
-        print("RIGHT")
+        # print("RIGHT")
     if direction == "DOWN":
         move_robots_down(eb, robot)
-        print("DOWN")
+        # print("DOWN")
     if direction == "LEFT":
-        print("LEFT")
+        # print("LEFT")
         move_robots_left(eb, robot)
 
 
@@ -40,14 +40,9 @@ def move_robots_up(eb, robot):
     number_of_steps = 0
     robot_prev_place = []
     p = robot.current_place
-    # counter = -1
     x = p.x
     lines_space = eb.row_space - x - 1
     counter = 0
-
-    # while eb.board[x][p.y] != 0 or eb.board[x][p.y] == 0 and eb.board[x + 1][p.y] != 0:
-    #     counter += 1
-    #     x += 1
     while lines_space > 0:
         counter += 1
         lines_space -= 1
@@ -56,13 +51,18 @@ def move_robots_up(eb, robot):
     number_steps_out = counter
     if p.y < eb.n / 2:
         while counter > 0:
+            # returns the robot
             r = find_robot_by_number(eb.board[p.x + counter][p.y])
+            # validity test
             if r.robot_number == 0:
                 counter -= 1
                 continue
+            # create a point to which the robot will move
             point_temp = Point(p.x + number_steps_out + 1, p.y + counter)
+            # return the route to this point
             robot_queue_node = bfs(eb.board, r.current_place, point_temp)
 
+            # If there is no path to the point, find a new point, as long as there is no correct path find a new point
             plus_steps = 1
             while robot_queue_node == -1:
                 point_temp = Point(p.x + number_steps_out + plus_steps, p.y + counter)
@@ -71,17 +71,16 @@ def move_robots_up(eb, robot):
                     plus_steps += 1
                 else:
                     break
-
+            # if there is a way, move the robot to the new point
             if robot_queue_node != -1:
                 dest = Point(r.current_place.x, r.current_place.y)
-                # add to back list
+                # add to back list that will later return to the point from which it came
                 robot_point = RobotPoint(r, dest)
                 robot_prev_place.append(robot_point)
                 # move robot to new place
                 number_of_steps += move_robot(eb, r, robot_queue_node)
                 counter -= 1
             else:
-                print("========================================================== -1  (move_robots_up 2) BFS")
                 counter -= 1
 
         # move robot to final place
@@ -99,9 +98,6 @@ def move_robots_up(eb, robot):
             point_temp = Point(p.x + number_steps_out + 1, p.y - counter)
             robot_queue_node = bfs(eb.board, r.current_place, point_temp)
 
-            # if robot_queue_node == -1:
-            #     point_temp = Point(p.x + number_steps_out + 2, p.y - counter)
-            #     robot_queue_node = bfs(board, r.current_place, point_temp)
             plus_steps = 1
             while robot_queue_node == -1:
                 point_temp = Point(p.x + number_steps_out + plus_steps, p.y - counter)
@@ -135,7 +131,6 @@ def move_robots_down(eb, robot):
     number_of_steps = 0
     robot_old_place = []
     p = robot.current_place
-    # counter = -1
     x = p.x
 
     lines_space = eb.row_space - (eb.n - x)
@@ -144,9 +139,6 @@ def move_robots_down(eb, robot):
         counter += 1
         lines_space -= 1
         x += 1
-    # while (eb.board[x][p.y] != 0) or (eb.board[x][p.y] == 0 and eb.board[x - 1][p.y] != 0):
-    #     counter += 1
-    #     x -= 1
     number_steps_out = counter
     if p.y < eb.n / 2:
         while counter > 0:
@@ -154,7 +146,7 @@ def move_robots_down(eb, robot):
             if r.robot_number == 0:
                 counter -= 1
                 continue
-            point_temp = Point(p.x - number_steps_out - counter - 1, p.y + counter)
+            point_temp = Point(p.x - number_steps_out - 1, p.y + counter)
             robot_queue_node = bfs(eb.board, r.current_place, point_temp)
 
             plus_steps = 1
@@ -189,8 +181,6 @@ def move_robots_down(eb, robot):
     if p.y >= eb.n / 2:
         while counter > 0:
             r = find_robot_by_number(eb.board[p.x - counter][p.y])
-            if r == -1:
-                print(343)
             if r.robot_number == 0:
                 counter -= 1
                 continue
@@ -232,7 +222,6 @@ def move_robots_left(eb, robot):
     number_of_steps = 0
     robot_old_place = []
     p = robot.current_place
-    # counter = -1
     y = p.y
 
     lines_space = eb.row_space - y - 1
@@ -243,9 +232,6 @@ def move_robots_left(eb, robot):
         lines_space -= 1
         y += 1
 
-    # while (eb.board[p.x][y] != 0) or (eb.board[p.x][y] == 0 and eb.board[p.x][y + 1] != 0):
-    #     counter += 1
-    #     y += 1
     number_steps_out = counter
     if p.x < eb.n / 2:
         while counter > 0:
@@ -327,7 +313,6 @@ def move_robots_right(eb, robot):
     number_of_steps = 0
     robot_old_place = []
     p = robot.current_place
-    # counter = -1
     y = p.y
     lines_space = eb.row_space - (eb.n - y)
     counter = 0
@@ -336,9 +321,6 @@ def move_robots_right(eb, robot):
         counter += 1
         lines_space -= 1
         y += 1
-    # while (eb.board[p.x][y] != 0) or (eb.board[p.x][y] == 0 and eb.board[p.x][y - 1] != 0):
-    #     counter += 1
-    #     y -= 1
     number_steps_out = counter
     if p.x < eb.n / 2:
         while lines_space > 0:

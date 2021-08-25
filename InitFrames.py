@@ -8,6 +8,7 @@ def init_frames(eb):
     flag = False
     number_of_steps = 0
     lines = int((eb.n - eb.n_original) / 2)
+    eb.board_ui.cratetable()
     # for on the top frame
     for i_frame in range(eb.row_space):
         for j_frame in range(eb.n - (2 * eb.row_space)):
@@ -19,6 +20,8 @@ def init_frames(eb):
                     for j_board in range(eb.n_original):
                         if eb.board[i_board + lines][j_board + lines] != 0 and eb.board[i_board + lines][j_board + lines] != -1:
                             robot = find_robot_by_number(eb.board[i_board + lines][j_board + lines])
+                            if Point.equal(robot.current_place, robot.end_place):
+                                continue
                             # The point to which the robot goes
                             p = Point(i_frame, j_frame + eb.row_space)
                             robot_queue_node = bfs(eb.board, robot.current_place, p)
@@ -40,6 +43,8 @@ def init_frames(eb):
                     for i_board in range(eb.n_original):
                         if eb.board[i_board + lines][j_board + lines] != 0 and eb.board[i_board + lines][j_board + lines] != -1:
                             robot = find_robot_by_number(eb.board[i_board + lines][j_board + lines])
+                            if Point.equal(robot.current_place, robot.end_place):
+                                continue
                             # The point to which the robot goes
                             p = Point(i_frame + eb.row_space, j_frame)
                             robot_queue_node = bfs(eb.board, robot.current_place, p)
@@ -63,6 +68,8 @@ def init_frames(eb):
                     for j_board in range(eb.n_original):
                         if eb.board[i_down_board + lines][j_board + lines] != 0 and eb.board[i_down_board + lines][j_board + lines] != -1:
                             robot = find_robot_by_number(eb.board[i_down_board + lines][j_board + lines])
+                            if Point.equal(robot.current_place, robot.end_place):
+                                continue
                             # The point to which the robot goes
                             p = Point(i_down, j_frame + eb.row_space)
                             robot_queue_node = bfs(eb.board, robot.current_place, p)
@@ -85,6 +92,8 @@ def init_frames(eb):
                     for i_board in range(eb.n_original):
                         if eb.board[i_board + lines][j_down_board + lines] != 0 and eb.board[i_board + lines][j_down_board + lines] != -1:
                             robot = find_robot_by_number(eb.board[i_board + lines][j_down_board + lines])
+                            if Point.equal(robot.current_place, robot.end_place):
+                                continue
                             # The point to which the robot goes
                             p = Point(i_frame + eb.row_space, j_down)
                             robot_queue_node = bfs(eb.board, robot.current_place, p)
@@ -94,6 +103,8 @@ def init_frames(eb):
                                 flag = True
                                 break
                 flag = False
-    print("----------------------------number_of_steps after frame -----------------------------------------: ",
-          number_of_steps)
+
+    # print("----------------------------number_of_steps after frame -----------------------------------------: ",
+    # number_of_steps)
+
     return number_of_steps

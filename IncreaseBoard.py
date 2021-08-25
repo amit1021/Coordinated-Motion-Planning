@@ -6,7 +6,6 @@ def row_space(number_of_robots, n):
         number_of_robots -= (n - squares) * 4
         squares += 2
         row_space += 1
-    print("number of blank: ", row_space)
     return row_space + 2
 
 
@@ -17,5 +16,4 @@ def row_space_final(number_of_robots, n, squares):
     while number_of_robots > 0:
         number_of_robots -= (n - squares) * 4
         row_space += 1
-    print("number of blank: ", row_space)
     return row_space

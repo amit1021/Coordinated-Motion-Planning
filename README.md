@@ -4,6 +4,7 @@ The competition has two separate categories, with the two following objective fu
 - Minimize the makespan, i.e., the time until all robots have reached their destinations.
 - Minimize the total distance traveled by all robots.
   
+
 ##### Class Start Game:
 This class represents the game.
 - start_game(eb): This function run until all the robots reached their place.
@@ -16,7 +17,7 @@ This class represents the initialization of the board.
 ##### Class init frames:
 This class represents the initialization of the frame.
 - init_frames(eb): Moves all robots to the board frame
-- 
+
 ##### Class insert in spiral:
 This class represents the passage of the robots to the final location .
 - insert_in_spiral(eb):   Runs on the original board and wherever it is the final location of a robot, moves the robot to it

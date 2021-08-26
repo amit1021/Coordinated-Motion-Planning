@@ -57,7 +57,7 @@ This class has an object that is returned from the BFS function and saves the sh
 This class represents the robot object.
 - __init__(self, current_place:Point, end_place:Point): The constructor, gets current Point and end Point and create a Robot.
 
-##### __init__(self, current_place:Point, end_place:Point): The constructor, gets current Point and end Point and create a Robot. 
+##### Class Point:
 This class represents the Point object.
 - __init__(self, x: double, y: double): The constructor, gets X and Y and create a Point. 
 - equal(p1, p2): Gets tow Points and return if the Points is equals.
